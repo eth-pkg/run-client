@@ -1,244 +1,349 @@
 # run-client
 Ethereum client scripts to run clients, but with standardized options
 
-## Running a node 
+## Table of Contents
+- [Running a Node](#running-a-node)
+  - [besu - lighthouse](#besu---lighthouse)
+  - [besu - lodestar](#besu---lodestar)
+  - [besu - nimbus-eth2](#besu---nimbus-eth2)
+  - [besu - prysm](#besu---prysm)
+  - [besu - teku](#besu---teku)
+  - [erigon - lighthouse](#erigon---lighthouse)
+  - [erigon - lodestar](#erigon---lodestar)
+  - [erigon - nimbus-eth2](#erigon---nimbus-eth2)
+  - [erigon - prysm](#erigon---prysm)
+  - [erigon - teku](#erigon---teku)
+  - [geth - lighthouse](#geth---lighthouse)
+  - [geth - lodestar](#geth---lodestar)
+  - [geth - nimbus-eth2](#geth---nimbus-eth2)
+  - [geth - prysm](#geth---prysm)
+  - [geth - teku](#geth---teku)
+  - [nethermind - lighthouse](#nethermind---lighthouse)
+  - [nethermind - lodestar](#nethermind---lodestar)
+  - [nethermind - nimbus-eth2](#nethermind---nimbus-eth2)
+  - [nethermind - prysm](#nethermind---prysm)
+  - [nethermind - teku](#nethermind---teku)
+
+## Running a Node 
+
+<details>
+  <summary>besu - lighthouse</summary>
+
+  Open two terminals and execute the following commands:
+
+  Terminal 1:
+  ```bash 
+  bash run-client.sh --network mainnet --consensus-client lighthouse --execution-client besu --run execution 
+  ```
+
+  Terminal 2:
+  ```bash
+  bash run-client.sh --network mainnet --consensus-client lighthouse --execution-client besu --run consensus 
+  ```
+</details>
+
+<details>
+  <summary>besu - lodestar</summary>
+
+  Open two terminals and execute the following commands:
+
+  Terminal 1:
+  ```bash 
+  bash run-client.sh --network mainnet --consensus-client lodestar --execution-client besu --run execution 
+  ```
+
+  Terminal 2:
+  ```bash
+  bash run-client.sh --network mainnet --consensus-client lodestar --execution-client besu --run consensus 
+  ```
+</details>
+
+<details>
+  <summary>besu - nimbus-eth2</summary>
+
+  Open two terminals and execute the following commands:
+
+  Terminal 1:
+  ```bash 
+  bash run-client.sh --network mainnet --consensus-client nimbus-eth2 --execution-client besu --run execution 
+  ```
+
+  Terminal 2:
+  ```bash
+  bash run-client.sh --network mainnet --consensus-client nimbus-eth2 --execution-client besu --run consensus 
+  ```
+</details>
+
+<details>
+  <summary>besu - prysm</summary>
+
+  Open two terminals and execute the following commands:
+
+  Terminal 1:
+  ```bash 
+  bash run-client.sh --network mainnet --consensus-client prysm --execution-client besu --run execution 
+  ```
+
+  Terminal 2:
+  ```bash
+  bash run-client.sh --network mainnet --consensus-client prysm --execution-client besu --run consensus 
+  ```
+</details>
+
+<details>
+  <summary>besu - teku</summary>
+
+  Open two terminals and execute the following commands:
+
+  Terminal 1:
+  ```bash 
+  bash run-client.sh --network mainnet --consensus-client teku --execution-client besu --run execution 
+  ```
+
+  Terminal 2:
+  ```bash
+  bash run-client.sh --network mainnet --consensus-client teku --execution-client besu --run consensus 
+  ```
+</details>
 
-### besu - lighthouse
+<details>
+  <summary>erigon - lighthouse</summary>
 
-```bash 
-bash run-client.sh --network mainnet --consensus-client lighthouse --execution-client besu --run execution 
-```
+  Open two terminals and execute the following commands:
+
+  Terminal 1:
+  ```bash 
+  bash run-client.sh --network mainnet --consensus-client lighthouse --execution-client erigon --run execution 
+  ```
+
+  Terminal 2:
+  ```bash
+  bash run-client.sh --network mainnet --consensus-client lighthouse --execution-client erigon --run consensus 
+  ```
+</details>
 
-in another terminal 
+<details>
+  <summary>erigon - lodestar</summary>
 
-```bash
-bash run-client.sh --network mainnet --consensus-client lighthouse --execution-client besu --run consensus 
-```
+  Open two terminals and execute the following commands:
+
+  Terminal 1:
+  ```bash 
+  bash run-client.sh --network mainnet --consensus-client lodestar --execution-client erigon --run execution 
+  ```
+
+  Terminal 2:
+  ```bash
+  bash run-client.sh --network mainnet --consensus-client lodestar --execution-client erigon --run consensus 
+  ```
+</details>
 
-### besu - lodestar
+<details>
+  <summary>erigon - nimbus-eth2</summary>
 
-```bash 
-bash run-client.sh --network mainnet --consensus-client lodestar --execution-client besu --run execution 
-```
+  Open two terminals and execute the following commands:
+
+  Terminal 1:
+  ```bash 
+  bash run-client.sh --network mainnet --consensus-client nimbus-eth2 --execution-client erigon --run execution 
+  ```
+
+  Terminal 2:
+  ```bash
+  bash run-client.sh --network mainnet --consensus-client nimbus-eth2 --execution-client erigon --run consensus 
+  ```
+</details>
 
-in another terminal 
+<details>
+  <summary>erigon - prysm</summary>
 
-```bash
-bash run-client.sh --network mainnet --consensus-client lodestar --execution-client besu --run consensus 
-```
+  Open two terminals and execute the following commands:
+
+  Terminal 1:
+  ```bash 
+  bash run-client.sh --network mainnet --consensus-client prysm --execution-client erigon --run execution 
+  ```
+
+  Terminal 2:
+  ```bash
+  bash run-client.sh --network mainnet --consensus-client prysm --execution-client erigon --run consensus 
+  ```
+</details>
 
-### besu - nimbus-eth2
+<details>
+  <summary>erigon - teku</summary>
 
-```bash 
-bash run-client.sh --network mainnet --consensus-client nimbus-eth2 --execution-client besu --run execution 
-```
+  Open two terminals and execute the following commands:
+
+  Terminal 1:
+  ```bash 
+  bash run-client.sh --network mainnet --consensus-client teku --execution-client erigon --run erigon 
+  ```
+
+  Terminal 2:
+  ```bash
+  bash run-client.sh --network mainnet --consensus-client teku --execution-client erigon --run consensus 
+  ```
+</details>
 
-in another terminal 
+<details>
+  <summary>geth - lighthouse</summary>
 
-```bash
-bash run-client.sh --network mainnet --consensus-client nimbus-eth2 --execution-client besu --run consensus 
-```
+  Open two terminals and execute the following commands:
+
+  Terminal 1:
+  ```bash 
+  bash run-client.sh --network mainnet --consensus-client lighthouse --execution-client geth --run execution 
+  ```
 
-### besu - prysm 
+  Terminal 2:
+  ```bash
+  bash run-client.sh --network mainnet --consensus-client lighthouse --execution-client geth --run consensus 
+  ```
+</details>
 
-```bash 
-bash run-client.sh --network mainnet --consensus-client prysm --execution-client besu --run execution 
-```
+<details>
+  <summary>geth - lodestar</summary>
 
-in another terminal 
+  Open two terminals and execute the following commands:
 
-```bash
-bash run-client.sh --network mainnet --consensus-client prysm --execution-client besu --run consensus 
-```
+  Terminal 1:
+  ```bash 
+  bash run-client.sh --network mainnet --consensus-client lodestar --execution-client geth --run execution 
+  ```
 
-### besu - teku 
+  Terminal 2:
+  ```bash
+  bash run-client.sh --network mainnet --consensus-client lodestar --execution-client geth --run consensus 
+  ```
+</details>
 
-```bash 
-bash run-client.sh --network mainnet --consensus-client teku --execution-client besu --run execution 
-```
+<details>
+  <summary>geth - nimbus-eth2</summary>
 
-in another terminal 
+  Open two terminals and execute the following commands:
 
-```bash
-bash run-client.sh --network mainnet --consensus-client teku --execution-client besu --run consensus 
-```
+  Terminal 1:
+  ```bash 
+  bash run-client.sh --network mainnet --consensus-client nimbus-eth2 --execution-client geth --run execution 
+  ```
 
-### erigon - lighthouse 
+  Terminal 2:
+  ```bash
+  bash run-client.sh --network mainnet --consensus-client nimbus-eth2 --execution-client geth --run consensus 
+  ```
+</details>
 
-```bash 
-bash run-client.sh --network mainnet --consensus-client lighthouse --execution-client erigon --run execution 
-```
+<details>
+  <summary>geth - prysm</summary>
 
-in another terminal 
+  Open two terminals and execute the following commands:
 
-```bash
-bash run-client.sh --network mainnet --consensus-client lighthouse --execution-client erigon --run consensus 
-```
+  Terminal 1:
+  ```bash 
+  bash run-client.sh --network mainnet --consensus-client prysm --execution-client geth --run execution 
+  ```
 
-### erigon - lodestar 
-
-```bash 
-bash run-client.sh --network mainnet --consensus-client lodestar --execution-client erigon --run execution 
-```
-
-in another terminal 
-
-```bash
-bash run-client.sh --network mainnet --consensus-client lodestar --execution-client erigon --run consensus 
-```
-
-### erigon - nimbus-eth2 
-
-```bash 
-bash run-client.sh --network mainnet --consensus-client nimbus-eth2 --execution-client erigon --run execution 
-```
-
-in another terminal 
-
-```bash
-bash run-client.sh --network mainnet --consensus-client nimbus-eth2 --execution-client erigon --run consensus 
-```
-
-### erigon - prysm 
-
-```bash 
-bash run-client.sh --network mainnet --consensus-client prysm --execution-client erigon --run execution 
-```
-
-in another terminal 
-
-```bash
-bash run-client.sh --network mainnet --consensus-client prysm --execution-client erigon --run consensus 
-```
-
-### erigon - teku 
-
-```bash 
-bash run-client.sh --network mainnet --consensus-client teku --execution-client erigon --run erigon 
-```
-
-in another terminal 
-
-```bash
-bash run-client.sh --network mainnet --consensus-client teku --execution-client erigon --run consensus 
-```
-
-### geth - lighthouse 
-
-```bash 
-bash run-client.sh --network mainnet --consensus-client lighthouse --execution-client geth --run execution 
-```
-
-in another terminal 
-
-```bash
-bash run-client.sh --network mainnet --consensus-client lighthouse --execution-client geth --run consensus 
-```
-
-### geth - lodestar
-
-```bash 
-bash run-client.sh --network mainnet --consensus-client lodestar --execution-client geth --run execution 
-```
-
-in another terminal 
-
-```bash
-bash run-client.sh --network mainnet --consensus-client lodestar --execution-client geth --run consensus 
-```
-
-### geth - nimbus-eth2
-
-```bash 
-bash run-client.sh --network mainnet --consensus-client nimbus-eth2 --execution-client geth --run execution 
-```
-
-in another terminal 
-
-```bash
-bash run-client.sh --network mainnet --consensus-client nimbus-eth2 --execution-client geth --run consensus 
-```
-
-### geth - prysm 
-
-```bash 
-bash run-client.sh --network mainnet --consensus-client prysm --execution-client geth --run execution 
-```
-
-in another terminal 
-
-```bash
-bash run-client.sh --network mainnet --consensus-client prysm --execution-client geth --run consensus 
-```
-
-### geth - teku 
-
-```bash 
-bash run-client.sh --network mainnet --consensus-client teku --execution-client geth --run execution 
-```
-
-in another terminal 
-
-```bash
-bash run-client.sh --network mainnet --consensus-client teku --execution-client besu --run consensus 
-```
-
-### nethermind - lighthouse 
-
-```bash 
-bash run-client.sh --network mainnet --consensus-client lighthouse --execution-client nethermind --run execution 
-```
-
-in another terminal 
-
-```bash
-bash run-client.sh --network mainnet --consensus-client lighthouse --execution-client nethermind --run consensus 
-```
-
-### nethermind - lodestar
-
-```bash 
-bash run-client.sh --network mainnet --consensus-client lodestar --execution-client nethermind --run execution 
-```
-
-in another terminal 
-
-```bash
-bash run-client.sh --network mainnet --consensus-client lodestar --execution-client nethermind --run consensus 
-```
-
-### nethermind - nimbus-eth2
-
-```bash 
-bash run-client.sh --network mainnet --consensus-client nimbus-eth2 --execution-client nethermind --run execution 
-```
-
-in another terminal 
-
-```bash
-bash run-client.sh --network mainnet --consensus-client nimbus-eth2 --execution-client nethermind --run consensus 
-```
-
-### nethermind - prysm
-
-```bash 
-bash run-client.sh --network mainnet --consensus-client prysm --execution-client nethermind --run execution 
-```
-
-in another terminal 
-
-```bash
-bash run-client.sh --network mainnet --consensus-client prysm --execution-client nethermind --run consensus 
-```
-
-### nethermind - teku
-
-```bash 
-bash run-client.sh --network mainnet --consensus-client teku --execution-client nethermind --run execution 
-```
-
-in another terminal 
-
-```bash
-bash run-client.sh --network mainnet --consensus-client teku --execution-client nethermind --run consensus 
-```
+  Terminal 2:
+  ```bash
+  bash run-client.sh --network mainnet --consensus-client prysm --execution-client geth --run consensus 
+  ```
+</details>
+
+<details>
+  <summary>geth - teku</summary>
+
+  Open two terminals and execute the following commands:
+
+  Terminal 1:
+  ```bash 
+  bash run-client.sh --network mainnet --consensus-client teku --execution-client geth --run execution 
+  ```
+
+  Terminal 2:
+  ```bash
+  bash run-client.sh --network mainnet --consensus-client besu --execution-client geth --run consensus 
+  ```
+</details>
+
+<details>
+  <summary>nethermind - lighthouse</summary>
+
+  Open two terminals and execute the following commands:
+
+  Terminal 1:
+  ```bash 
+  bash run-client.sh --network mainnet --consensus-client lighthouse --execution-client nethermind --run execution 
+  ```
+
+  Terminal 2:
+  ```bash
+  bash run-client.sh --network mainnet --consensus-client lighthouse --execution-client nethermind --run consensus 
+  ```
+</details>
+
+<details>
+  <summary>nethermind - lodestar</summary>
+
+  Open two terminals and execute the following commands:
+
+  Terminal 1:
+  ```bash 
+  bash run-client.sh --network mainnet --consensus-client lodestar --execution-client nethermind --
+
+run execution 
+  ```
+
+  Terminal 2:
+  ```bash
+  bash run-client.sh --network mainnet --consensus-client lodestar --execution-client nethermind --run consensus 
+  ```
+</details>
+
+<details>
+  <summary>nethermind - nimbus-eth2</summary>
+
+  Open two terminals and execute the following commands:
+
+  Terminal 1:
+  ```bash 
+  bash run-client.sh --network mainnet --consensus-client nimbus-eth2 --execution-client nethermind --run execution 
+  ```
+
+  Terminal 2:
+  ```bash
+  bash run-client.sh --network mainnet --consensus-client nimbus-eth2 --execution-client nethermind --run consensus 
+  ```
+</details>
+
+<details>
+  <summary>nethermind - prysm</summary>
+
+  Open two terminals and execute the following commands:
+
+  Terminal 1:
+  ```bash 
+  bash run-client.sh --network mainnet --consensus-client prysm --execution-client nethermind --run execution 
+  ```
+
+  Terminal 2:
+  ```bash
+  bash run-client.sh --network mainnet --consensus-client prysm --execution-client nethermind --run consensus 
+  ```
+</details>
+
+<details>
+  <summary>nethermind - teku</summary>
+
+  Open two terminals and execute the following commands:
+
+  Terminal 1:
+  ```bash 
+  bash run-client.sh --network mainnet --consensus-client teku --execution-client nethermind --run execution 
+  ```
+
+  Terminal 2:
+  ```bash
+  bash run-client.sh --network mainnet --consensus-client teku --execution-client nethermind --run consensus 
+  ```
+</details>

@@ -41,10 +41,13 @@ parse_options() {
     checkpoint_sync_url=""
     run_validator=false
 
-    OPTS=$(getopt -o '' -l "secrets-file:,data-dir:,network:,endpoint-url:,checkpoint-sync-url:,run-validator" -n "$0" -- "$@")
+    OPTS=$(getopt -o '' -l "secrets-file:,data-dir:,network:,endpoint-url:,checkpoint-sync-url:,run-validator:" -n "$0" -- "$@")
     if [ $? != 0 ]; then
+        echo "no argument were provided"
         usage
     fi
+
+    echo "options: $@"
 
     eval set -- "$OPTS"
 
@@ -59,19 +62,19 @@ parse_options() {
                 shift 2
                 ;;
             --network)
-                network="$3"
+                network="$2"
                 shift 2
                 ;;
             --endpoint-url)
-                endpoint_url="$4"
+                endpoint_url="$2"
                 shift 2
                 ;;
             --checkpoint-sync-url)
-                checkpoint_sync_url="$5"
+                checkpoint_sync_url="$2"
                 shift 2
                 ;;  
             --run-validator)
-                run_validator="$6"
+                run_validator="$2"
                 shift 2
                 ;;      
             --)
@@ -79,21 +82,48 @@ parse_options() {
                 break
                 ;;
             *)
+                echo "unknown error"
                 usage
                 ;;
         esac
     done
 
-    # Validate required options, everything is required, defaults are given
-    if [ -z "$secrets_file" ] || [ -z "$data_dir" ] || [ -z "$network" ] || [ -z "$endpoint_url" ] || [ -z "$checkpoint_sync_url" ] || [ -z "$run_validator" ]; then
+    if [ -z "$secrets_file" ]; then
+        echo "please provide a value for secrets-file"
         usage
     fi
 
-    if [[ "$value" == "true" || "$value" == "false" ]]; then
-        # do nothing
-    else
+    if [ -z "$data_dir" ]; then
+        echo "please provide a value for data-dir"
         usage
     fi
+
+    if [ -z "$network" ]; then
+        echo "please provide a value for network"
+        usage
+    fi
+
+    if [ -z "$endpoint_url" ]; then
+        echo "please provide a value for endpoint-url"
+        usage
+    fi
+
+    if [ -z "$checkpoint_sync_url" ]; then
+        echo "please provide a value for checkpoint-sync-url"
+        usage
+    fi
+
+    if [ -z "$run_validator" ]; then
+        echo "please provide a value for run-validator"
+        usage
+    fi
+
+    if [[ "$run_validator" == true && "$run_validator" != false ]]; then
+        echo "run-validator value must be true or false"
+        echo "provided value is: $run_validator"
+        usage
+    fi
+
 
     echo "Secrets file: $secrets_file"
     echo "Data directory: $data_dir"

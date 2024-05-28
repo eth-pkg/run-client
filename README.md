@@ -177,7 +177,7 @@ Ethereum client scripts to run clients, but with standardized options
 
   Terminal 1:
   ```bash 
-  bash run-client.sh --network mainnet --consensus-client teku --execution-client erigon --run erigon 
+  bash run-client.sh --network mainnet --consensus-client teku --execution-client erigon --run execution 
   ```
 
   Terminal 2:
@@ -262,7 +262,7 @@ Ethereum client scripts to run clients, but with standardized options
 
   Terminal 2:
   ```bash
-  bash run-client.sh --network mainnet --consensus-client besu --execution-client geth --run consensus 
+  bash run-client.sh --network mainnet --consensus-client teku --execution-client geth --run consensus 
   ```
 </details>
 
@@ -289,9 +289,7 @@ Ethereum client scripts to run clients, but with standardized options
 
   Terminal 1:
   ```bash 
-  bash run-client.sh --network mainnet --consensus-client lodestar --execution-client nethermind --
-
-run execution 
+  bash run-client.sh --network mainnet --consensus-client lodestar --execution-client nethermind --run execution 
   ```
 
   Terminal 2:

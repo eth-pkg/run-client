@@ -10,7 +10,8 @@ parse_options "$@"
 
 lighthouse bn \
   --network $network \
-  --execution-endpoint $endpoint_url \
+  # TODO this requires with http
+  --execution-endpoint http://$endpoint_url \
   --execution-jwt $secrets_file \
   --checkpoint-sync-url $checkpoint_sync_url \
   --disable-deposit-contract-sync

@@ -9,6 +9,8 @@ source "$script_dir/../commons.sh"
 parse_options "$@"
 
 lodestar beacon --network $network \
+    --dataDir $data_dir \
 	--jwtSecret $secrets_file \
-	--execution.urls $endpoint_url \
+	## this also requires http
+	--execution.urls http://$endpoint_url \
 	--checkpointSyncUrl $checkpoint_sync_url

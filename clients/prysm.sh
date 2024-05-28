@@ -9,7 +9,7 @@ source "$script_dir/../commons.sh"
 parse_options "$@"
 
 beacon-chain \
-	--execution-endpoint=$endpoint_url \
+	--execution-endpoint=http://$endpoint_url \
 	--mainnet \
 	--jwt-secret=$secrets_file \
 	--checkpoint-sync-url=$checkpoint_sync_url \

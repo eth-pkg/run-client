@@ -9,8 +9,9 @@ source "$script_dir/../commons.sh"
 parse_options "$@"
 
 teku \
-    --ee-endpoint=$endpoint_url                    \
+    --ee-endpoint=http://$endpoint_url                    \
     --ee-jwt-secret-file=$secrets_file                     \
     --metrics-enabled=true                                 \
     --rest-api-enabled=true                                \
-    --checkpoint-sync-url=$checkpoint_sync_url 
+    --checkpoint-sync-url=$checkpoint_sync_url  \
+    --data-path $data_dir

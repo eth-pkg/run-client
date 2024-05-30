@@ -30,6 +30,8 @@ is_valid_option() {
 run_node_parse_options() {
     valid_consensus_clients=("lighthouse" "lodestar" "nimbus-eth2" "prysm" "teku")
     valid_execution_clients=("besu" "erigon" "geth" "nethermind")
+    valid_networks=("mainnet" "ephemery")
+    valid_runs=("execution" "consensus")
 
     # Initialize variables
     network=
@@ -79,22 +81,22 @@ run_node_parse_options() {
 
     # Validate required options, everything is required, defaults are given
     if  [ -z "$network" ]; then
-	echo "please provide a network value"
+	    echo "please provide a network value"
         run_node_usage
     fi
 
     if  [ -z "$consensus_client" ]; then
-	echo "please provide consensus-client value"
+	    echo "please provide consensus-client value"
         run_node_usage
     fi
 
     if  [ -z "$execution_client" ]; then
-	echo "please provide execution-client value"
+	    echo "please provide execution-client value"
         run_node_usage
     fi
 
     if  [ -z "$run" ]; then
-	echo "please provide run value"
+	    echo "please provide run value"
         run_node_usage
     fi
 
@@ -114,11 +116,21 @@ run_node_parse_options() {
         fi
     fi
 
+     # Validate network
+    if [[ -n "$network" ]]; then
+        if ! is_valid_option "$network" "${valid_networks[@]}"; then
+            echo "Invalid network: $network"
+            usage
+        fi
+    fi
 
-    if [[ "$run" != "consensus" && "$run" != "execution" ]]; then
-        echo "run value must be consensus or execution"
-        echo "provided value is: $run"
-        run_node_usage
+
+     # Validate run
+    if [[ -n "$run" ]]; then
+        if ! is_valid_option "$run" "${valid_runs[@]}"; then
+            echo "Invalid run: $run"
+            usage
+        fi
     fi
 
     if [[ "$run_validator" == true && "$run_validator" != false ]]; then
@@ -145,6 +157,23 @@ source "$script_dir/network/$network/$execution_client-$consensus_client/vars.en
 create_data_dir_if_not_exists $data_dir
 create_secrets_file_if_not_exists $secrets_file
 
+bootnodes=""
+networkid=""
+# ephemery setup
+if [ "$network" == "ephemery" ]; then 
+    echo "fetching ephemery state"
+    # TODO option to reset
+    # rm -rf $ephemery_dir
+    if [ ! -d "$ephemery_dir" ];then
+        wget -q https://github.com/ephemery-testnet/ephemery-genesis/releases/download/ephemery-111/testnet-all.tar.gz
+        mkdir $ephemery_dir && tar -xzf testnet-all.tar.gz -C $ephemery_dir
+        rm testnet-all.tar.gz 
+    fi 
+    networkid=$(cat $ephemery_dir/genesis.json | grep chainId | tr -d ',' | sed 's/"chainId"://g' | tr -d '[:space:]')
+    bootnodes=$(awk '{printf "%s,", $0}' $ephemery_dir/boot_enode.txt | sed 's/,$//')
+fi
+
+
 script=""
 
 if [ "$run" = "execution" ]; then 
@@ -155,10 +184,13 @@ fi
 
 chmod +x "$script"
 
-$script --data-dir $data_dir \
-        --secrets-file $secrets_file \
-        --endpoint-url $endpoint_url \
-        --checkpoint-sync-url $checkpoint_sync_url \
-        --network $network \
-        --run-validator $run_validator
+$script --data-dir "$data_dir" \
+        --secrets-file "$secrets_file" \
+        --endpoint-url "$endpoint_url" \
+        --checkpoint-sync-url "$checkpoint_sync_url" \
+        --network "$network" \
+        --run-validator "$run_validator" \
+        --networkid  "$networkid" \
+        --bootnodes "$bootnodes" \
+        --genesis-file "$genesis_file"
 

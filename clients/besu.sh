@@ -16,4 +16,8 @@ besu --data-path "$data_dir" \
   --host-allowlist=127.0.0.1,localhost        \
   --engine-host-allowlist=127.0.0.1,localhost \
   --engine-rpc-enabled        \
-  --engine-jwt-secret=$secrets_file
+  --engine-jwt-secret=$secrets_file \
+  --genesis-file=$genesis_file \
+  --bootnodes=$bootnodes \
+  --network-id=$networkid \
+  --kzg-trusted-setup=

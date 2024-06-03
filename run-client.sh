@@ -44,7 +44,11 @@ create_secrets_file_if_not_exists(){
 
 # Function to display usage information
 run_node_usage() {
-    echo "Usage: $0 [--network value] [--consensus-client lighthouse|lodestar|nimbus-eth2|prysm|teku] [--execution-client besu|erigon|geth|nethermind] [--run execution|consensus ] [--run-validator]"
+    echo "Usage: $0 [ --network value ]\
+                    [ --consensus-client lighthouse|lodestar|nimbus-eth2|prysm|teku ] \
+                    [ --execution-client besu|erigon|geth|nethermind ] \
+                    [ --run execution|consensus ] \
+                    [ --run-validator ]"
     exit 1
 }
 
@@ -70,7 +74,11 @@ run_node_parse_options() {
     run=
     run_validator=false
 
-    OPTS=$(getopt -o '' -l "network:,consensus-client:,execution-client:,run:,run-validator" -n "$0" -- "$@")
+    OPTS=$(getopt -o '' -l "network:\
+                            ,consensus-client:\
+                            ,execution-client:\
+                            ,run:\
+                            ,run-validator" -n "$0" -- "$@")
     if [ $? != 0 ]; then
         run_node_usage
     fi
@@ -111,22 +119,22 @@ run_node_parse_options() {
 
     # Validate required options, everything is required, defaults are given
     if  [ -z "$network" ]; then
-	echo "please provide a network value"
+	    echo "please provide a network value"
         run_node_usage
     fi
 
     if  [ -z "$consensus_client" ]; then
-	echo "please provide consensus-client value"
+	    echo "please provide consensus-client value"
         run_node_usage
     fi
 
     if  [ -z "$execution_client" ]; then
-	echo "please provide execution-client value"
+	    echo "please provide execution-client value"
         run_node_usage
     fi
 
     if  [ -z "$run" ]; then
-	echo "please provide run value"
+	    echo "please provide run value"
         run_node_usage
     fi
 
@@ -163,7 +171,7 @@ run_node_parse_options() {
     echo "Consensus Client: $consensus_client"
     echo "Execution Client: $execution_client"
     echo "Running Client: $run"
-    echo "Run validator: $run_validator"
+    echo "Run a validator: $run_validator"
 
 }
 
@@ -171,11 +179,11 @@ run_node_parse_options() {
 run_node_parse_options "$@"
 
 # source variables
-source "$script_dir/network/$network/$execution_client-$consensus_client/vars.env"
+source "$script_dir/network/$network/$execution_client-$consensus_client/shared.env"
 
 
-create_data_dir_if_not_exists $data_dir
-create_secrets_file_if_not_exists $secrets_file
+create_data_dir_if_not_exists $SHARED_CONFIG_DATA_DIR
+create_secrets_file_if_not_exists $SHARED_CONFIG_SECRETS_FILE
 
 
 script=""
@@ -191,16 +199,6 @@ fi
 
 chmod +x "$script"
 
-# TODO replace data_dir 
-# TODO replace secrets_file
-# TODO replace endpoint_url
-# TODO replace network 
-# TODO replace run-validator
-$script --data-dir $data_dir \
-        --secrets-file $secrets_file \
-        --endpoint-url $endpoint_url \
-        --checkpoint-sync-url $checkpoint_sync_url \
-        --network $network \
-        --run-validator $run_validator
+# TODO ovewrite file with shared.env
 
 $script --env-file $script_dir/network/$network/$execution_client-$consensus_client/$script.env

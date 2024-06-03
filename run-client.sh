@@ -2,9 +2,45 @@
 
 set -e
 
-script_dir="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
+error_handler() {
+    echo "Error occurred in script at line: $1"
+    echo "Command executed: $2"
+    exit 1
+}
 
-source "$script_dir/commons.sh"
+# Trap errors and call the error_handler function
+trap 'error_handler ${LINENO} "${BASH_COMMAND}"' ERR
+
+
+valid_execution_clients=("besu" "erigon" "geth" "nethermind")
+valid_consensus_clients=("lighthouse" "lodestar" "nimbus-eth2" "prysm" "teku")
+
+declare -A latest_clients
+
+latest_clients["besu"]="24.5.1"
+latest_clients["erigon"]="2.60.0"
+latest_clients["geth"]="1.1.4"
+latest_clients["lighthouse"]="5.1.3"
+latest_clients["lodestar"]="1.18.1"
+latest_clients["nethermind"]="1.26.0"
+latest_clients["nimbus-eth2"]="1.5.0"
+latest_clients["prysm"]="5.0.3"
+latest_clients["teku"]="24.4.0"
+
+
+
+create_data_dir_if_not_exists(){
+    if [ ! -d "$1" ]; then
+        mkdir -p "$1"
+    fi
+}
+
+create_secrets_file_if_not_exists(){
+    if [ ! -f "$1" ]; then
+        ## todo apply permissions
+        openssl rand -hex 32 | tr -d "\n" | sudo tee $1
+    fi 
+}
 
 # Function to display usage information
 run_node_usage() {
@@ -28,10 +64,6 @@ is_valid_option() {
 
 # Function to parse command-line options
 run_node_parse_options() {
-    valid_consensus_clients=("lighthouse" "lodestar" "nimbus-eth2" "prysm" "teku")
-    valid_execution_clients=("besu" "erigon" "geth" "nethermind")
-
-    # Initialize variables
     network=
     consensus_client=
     execution_client=
@@ -145,16 +177,25 @@ source "$script_dir/network/$network/$execution_client-$consensus_client/vars.en
 create_data_dir_if_not_exists $data_dir
 create_secrets_file_if_not_exists $secrets_file
 
+
 script=""
 
+latest_execution_client_version=$latest_clients["$execution_client"]
+latest_consensus_client_version=$latest_clients["$consensus_client"]
+
 if [ "$run" = "execution" ]; then 
-    script="$script_dir/clients/$execution_client.sh"
+    script="$script_dir/clients/$latest_execution_client_version/run-$execution_client.sh"
 else 
-    script="$script_dir/clients/$consensus_client.sh"
+    script="$script_dir/clients/$latest_consensus_client_version/run-$consensus_client.sh"
 fi 
 
 chmod +x "$script"
 
+# TODO replace data_dir 
+# TODO replace secrets_file
+# TODO replace endpoint_url
+# TODO replace network 
+# TODO replace run-validator
 $script --data-dir $data_dir \
         --secrets-file $secrets_file \
         --endpoint-url $endpoint_url \
@@ -162,3 +203,4 @@ $script --data-dir $data_dir \
         --network $network \
         --run-validator $run_validator
 
+$script --env-file $script_dir/network/$network/$execution_client-$consensus_client/$script.env

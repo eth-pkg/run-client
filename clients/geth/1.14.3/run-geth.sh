@@ -24,7 +24,7 @@ VERSION=false
 
 while [[ "$#" -gt 0 ]]; do
     case $1 in
-        --config-file|-c)
+        --env-file|-e)
             CONFIG_FILE="$2"
             shift 2
             ;;
@@ -76,7 +76,7 @@ append_option() {
   fi
 }
 
-append_option "--allow-insecure-unlock" "$GETH_CLI_ALLOW_INSECURE_UNLOCK"
+[ "$GETH_CLI_ALLOW_INSECURE_UNLOCK" = "true" ] && append_option "--allow-insecure-unlock" ""
 append_option "--keystore" "$GETH_CLI_KEYSTORE"
 append_option "--lightkdf" "$GETH_CLI_LIGHTKDF"
 append_option "--password" "$GETH_CLI_PASSWORD"
@@ -107,11 +107,11 @@ append_option "--authrpc.jwtsecret" "$GETH_CLI_AUTHRPC_JWTSECRET"
 append_option "--authrpc.port" "$GETH_CLI_AUTHRPC_PORT"
 append_option "--authrpc.vhosts" "$GETH_CLI_AUTHRPC_VHOSTS"
 append_option "--exec" "$GETH_CLI_EXEC"
-append_option "--graphql" "$GETH_CLI_GRAPHQL"
+[ "$GETH_CLI_GRAPHQL" = "true" ] && append_option "--graphql" ""
 append_option "--graphql.corsdomain" "$GETH_CLI_GRAPHQL_CORSDOMAIN"
 append_option "--graphql.vhosts" "$GETH_CLI_GRAPHQL_VHOSTS"
 append_option "--header" "$GETH_CLI_HEADER"
-append_option "--http" "$GETH_CLI_HTTP"
+[ "$GETH_CLI_HTTP" = "true" ] &&  append_option "--http" ""
 append_option "--http.addr" "$GETH_CLI_HTTP_ADDR"
 append_option "--http.api" "$GETH_CLI_HTTP_API"
 append_option "--http.corsdomain" "$GETH_CLI_HTTP_CORSDOMAIN"
@@ -129,7 +129,7 @@ append_option "--rpc.enabledeprecatedpersonal" "$GETH_CLI_RPC_ENABLEDEPRECATEDPE
 append_option "--rpc.evmtimeout" "$GETH_CLI_RPC_EVMTIMEOUT"
 append_option "--rpc.gascap" "$GETH_CLI_RPC_GASCAP"
 append_option "--rpc.txfeecap" "$GETH_CLI_RPC_TXFEECAP"
-append_option "--ws" "$GETH_CLI_WS"
+[ "$GETH_CLI_WS" = "true" ] && append_option "--ws" "$GETH_CLI_WS"
 append_option "--ws.addr" "$GETH_CLI_WS_ADDR"
 append_option "--ws.api" "$GETH_CLI_WS_API"
 append_option "--ws.origins" "$GETH_CLI_WS_ORIGINS"
@@ -143,7 +143,7 @@ append_option "--beacon.genesis.gvroot" "$GETH_CLI_BEACON_GENESIS_GVROOT"
 append_option "--beacon.genesis.time" "$GETH_CLI_BEACON_GENESIS_TIME"
 append_option "--beacon.nofilter" "$GETH_CLI_BEACON_NOFILTER"
 append_option "--beacon.threshold" "$GETH_CLI_BEACON_THRESHOLD"
-append_option "--dev" "$GETH_CLI_DEV"
+[ "$GETH_CLI_DEV" = "true" ] && append_option "--dev" ""
 append_option "--dev.gaslimit" "$GETH_CLI_DEV_GASLIMIT"
 append_option "--dev.period" "$GETH_CLI_DEV_PERIOD"
 append_option "--bloomfilter.size" "$GETH_CLI_BLOOMFILTER_SIZE"
@@ -154,13 +154,13 @@ append_option "--datadir.minfreedisk" "$GETH_CLI_DATADIR_MINFREEDISK"
 append_option "--db.engine" "$GETH_CLI_DB_ENGINE"
 append_option "--eth.requiredblocks" "$GETH_CLI_ETH_REQUIREDBLOCKS"
 append_option "--exitwhensynced" "$GETH_CLI_EXITWHENSYNCED"
-append_option "--goerli" "$GETH_CLI_GOERLI"
-append_option "--holesky" "$GETH_CLI_HOLESKY"
-append_option "--mainnet" "$GETH_CLI_MAINNET"
+[ "$GETH_CLI_GOERLI" = "true" ] && append_option "--goerli" ""
+[ "$GETH_CLI_HOLESKY" = "true" ] && append_option "--holesky" ""
+[ "$GETH_CLI_MAINNET" = "true" ] && append_option "--mainnet" ""
 append_option "--networkid" "$GETH_CLI_NETWORKID"
 append_option "--override.cancun" "$GETH_CLI_OVERRIDE_CANCUN"
 append_option "--override.verkle" "$GETH_CLI_OVERRIDE_VERKLE"
-append_option "--sepolia" "$GETH_CLI_SEPOLIA"
+[ "$GETH_CLI_SEPOLIA" = "true" ] && append_option "--sepolia" ""
 append_option "--snapshot" "$GETH_CLI_SNAPSHOT"
 append_option "--gpo.blocks" "$GETH_CLI_GPO_BLOCKS"
 append_option "--gpo.ignoreprice" "$GETH_CLI_GPO_IGNOREPRICE"
@@ -251,4 +251,6 @@ append_option "--vmdebug" "$GETH_CLI_VMDEBUG"
 append_option "--vmtrace" "$GETH_CLI_VMTRACE"
 append_option "--vmtrace.jsonconfig" "$GETH_CLI_VMTRACE_JSONCONFIG"
 
-geth $GETH_CLI_OPTIONS
+echo "Using Options: $OPTIONS"
+
+geth $OPTIONS

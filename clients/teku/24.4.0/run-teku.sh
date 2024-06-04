@@ -24,7 +24,7 @@ VERSION=false
 
 while [[ "$#" -gt 0 ]]; do
     case $1 in
-        --config-file|-c)
+        --env-file|-e)
             CONFIG_FILE="$2"
             shift 2
             ;;
@@ -169,5 +169,8 @@ append_option "--metrics-interface" "$TEKU_CLI_METRICS_INTERFACE"
 append_option "--metrics-port" "$TEKU_CLI_METRICS_PORT"
 append_option "--metrics-publish-endpoint" "$TEKU_CLI_METRICS_PUBLISH_ENDPOINT"
 append_option "--metrics-publish-interval" "$TEKU_CLI_METRICS_PUBLISH_INTERVAL"
+
+
+echo "Using Options: $OPTIONS"
 
 teku $OPTIONS

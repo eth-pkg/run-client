@@ -24,7 +24,7 @@ VERSION=false
 
 while [[ "$#" -gt 0 ]]; do
     case $1 in
-        --config-file|-c)
+        --env-file|-e)
             CONFIG_FILE="$2"
             shift 2
             ;;
@@ -74,5 +74,7 @@ append_option() {
     OPTIONS="$OPTIONS $option $value"
   fi
 }
+
+echo "Using Options: $OPTIONS"
 
 nethermind $OPTIONS

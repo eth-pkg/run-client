@@ -24,7 +24,7 @@ VERSION=false
 
 while [[ "$#" -gt 0 ]]; do
     case $1 in
-        --config-file|-c)
+        --env-file|-e)
             CONFIG_FILE="$2"
             shift 2
             ;;
@@ -158,5 +158,7 @@ append_option "--logLevel" "$LODESTAR_CLI_BN_LOG_LEVEL"
 append_option "--logFile" "$LODESTAR_CLI_BN_LOG_FILE"
 append_option "--logFileLevel" "$LODESTAR_CLI_BN_LOG_FILE_LEVEL"
 append_option "--logFileDailyRotate" "$LODESTAR_CLI_BN_LOG_FILE_DAILY_ROTATE"
+
+echo "Using Options: $OPTIONS"
 
 lodestar beacon $OPTIONS

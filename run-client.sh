@@ -19,11 +19,11 @@ declare -A latest_clients
 
 latest_clients["besu"]="24.5.1"
 latest_clients["erigon"]="2.60.0"
-latest_clients["geth"]="1.1.4"
+latest_clients["geth"]="1.14.3"
 latest_clients["lighthouse"]="5.1.3"
 latest_clients["lodestar"]="1.18.1"
 latest_clients["nethermind"]="1.26.0"
-latest_clients["nimbus-eth2"]="1.5.0"
+latest_clients["nimbus-eth2"]="24.5.1"
 latest_clients["prysm"]="5.0.3"
 latest_clients["teku"]="24.4.0"
 
@@ -178,9 +178,11 @@ run_node_parse_options() {
 # Parse command-line options, standardized options for all clients
 run_node_parse_options "$@"
 
+script_dir="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 # source variables
+set -a 
 source "$script_dir/network/$network/$execution_client-$consensus_client/shared.env"
-
+set +a
 
 create_data_dir_if_not_exists $SHARED_CONFIG_DATA_DIR
 create_secrets_file_if_not_exists $SHARED_CONFIG_SECRETS_FILE
@@ -188,17 +190,17 @@ create_secrets_file_if_not_exists $SHARED_CONFIG_SECRETS_FILE
 
 script=""
 
-latest_execution_client_version=$latest_clients["$execution_client"]
-latest_consensus_client_version=$latest_clients["$consensus_client"]
+latest_execution_client_version=${latest_clients["$execution_client"]}
+latest_consensus_client_version=${latest_clients["$consensus_client"]}
 
 if [ "$run" = "execution" ]; then 
-    script="$script_dir/clients/$latest_execution_client_version/run-$execution_client.sh"
+    script="$script_dir/clients/$execution_client/$latest_execution_client_version/run-$execution_client.sh"
+    chmod +x "$script"
+    $script --env-file "$script_dir/network/$network/$execution_client-$consensus_client/$execution_client.env"
+
 else 
-    script="$script_dir/clients/$latest_consensus_client_version/run-$consensus_client.sh"
+    script="$script_dir/clients/$consensus_client/$latest_consensus_client_version/run-$consensus_client.sh"
+    chmod +x "$script"
+    $script --env-file "$script_dir/network/$network/$execution_client-$consensus_client/$consensus_client.env"
+
 fi 
-
-chmod +x "$script"
-
-# TODO ovewrite file with shared.env
-
-$script --env-file $script_dir/network/$network/$execution_client-$consensus_client/$script.env

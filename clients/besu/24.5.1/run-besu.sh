@@ -25,7 +25,7 @@ VERSION=false
 
 while [[ "$#" -gt 0 ]]; do
     case $1 in
-        --config-file|-c)
+        --env-file|-e)
             CONFIG_FILE="$2"
             shift 2
             ;;
@@ -227,5 +227,7 @@ append_option "--api-gas-price-percentile" "$BESU_CLI_API_GAS_PRICE_PERCENTILE"
 append_option "--rpc-gas-cap" "$BESU_CLI_RPC_GAS_CAP"
 append_option "--rpc-max-logs-range" "$BESU_CLI_RPC_MAX_LOGS_RANGE"
 append_option "--rpc-max-trace-filter-range" "$BESU_CLI_RPC_MAX_TRACE_FILTER_RANGE"
+
+echo "Using Options: $OPTIONS"
 
 besu $OPTIONS

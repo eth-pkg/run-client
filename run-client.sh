@@ -2,13 +2,53 @@
 
 set -e
 
-script_dir="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
+error_handler() {
+    echo "Error occurred in script at line: $1"
+    echo "Command executed: $2"
+    exit 1
+}
 
-source "$script_dir/commons.sh"
+# Trap errors and call the error_handler function
+trap 'error_handler ${LINENO} "${BASH_COMMAND}"' ERR
+
+
+valid_execution_clients=("besu" "erigon" "geth" "nethermind")
+valid_consensus_clients=("lighthouse" "lodestar" "nimbus-eth2" "prysm" "teku")
+
+declare -A latest_clients
+
+latest_clients["besu"]="24.5.1"
+latest_clients["erigon"]="2.60.0"
+latest_clients["geth"]="1.14.3"
+latest_clients["lighthouse"]="5.1.3"
+latest_clients["lodestar"]="1.18.1"
+latest_clients["nethermind"]="1.26.0"
+latest_clients["nimbus-eth2"]="24.5.1"
+latest_clients["prysm"]="5.0.3"
+latest_clients["teku"]="24.4.0"
+
+
+
+create_data_dir_if_not_exists(){
+    if [ ! -d "$1" ]; then
+        mkdir -p "$1"
+    fi
+}
+
+create_secrets_file_if_not_exists(){
+    if [ ! -f "$1" ]; then
+        ## todo apply permissions
+        openssl rand -hex 32 | tr -d "\n" | sudo tee $1
+    fi 
+}
 
 # Function to display usage information
 run_node_usage() {
-    echo "Usage: $0 [--network value] [--consensus-client lighthouse|lodestar|nimbus-eth2|prysm|teku] [--execution-client besu|erigon|geth|nethermind] [--run execution|consensus ] [--run-validator]"
+    echo "Usage: $0 [ --network value ]\
+                    [ --consensus-client lighthouse|lodestar|nimbus-eth2|prysm|teku ] \
+                    [ --execution-client besu|erigon|geth|nethermind ] \
+                    [ --run execution|consensus ] \
+                    [ --run-validator ]"
     exit 1
 }
 
@@ -28,17 +68,17 @@ is_valid_option() {
 
 # Function to parse command-line options
 run_node_parse_options() {
-    valid_consensus_clients=("lighthouse" "lodestar" "nimbus-eth2" "prysm" "teku")
-    valid_execution_clients=("besu" "erigon" "geth" "nethermind")
-
-    # Initialize variables
     network=
     consensus_client=
     execution_client=
     run=
     run_validator=false
 
-    OPTS=$(getopt -o '' -l "network:,consensus-client:,execution-client:,run:,run-validator" -n "$0" -- "$@")
+    OPTS=$(getopt -o '' -l "network:\
+                            ,consensus-client:\
+                            ,execution-client:\
+                            ,run:\
+                            ,run-validator" -n "$0" -- "$@")
     if [ $? != 0 ]; then
         run_node_usage
     fi
@@ -79,22 +119,22 @@ run_node_parse_options() {
 
     # Validate required options, everything is required, defaults are given
     if  [ -z "$network" ]; then
-	echo "please provide a network value"
+	    echo "please provide a network value"
         run_node_usage
     fi
 
     if  [ -z "$consensus_client" ]; then
-	echo "please provide consensus-client value"
+	    echo "please provide consensus-client value"
         run_node_usage
     fi
 
     if  [ -z "$execution_client" ]; then
-	echo "please provide execution-client value"
+	    echo "please provide execution-client value"
         run_node_usage
     fi
 
     if  [ -z "$run" ]; then
-	echo "please provide run value"
+	    echo "please provide run value"
         run_node_usage
     fi
 
@@ -131,34 +171,36 @@ run_node_parse_options() {
     echo "Consensus Client: $consensus_client"
     echo "Execution Client: $execution_client"
     echo "Running Client: $run"
-    echo "Run validator: $run_validator"
+    echo "Run a validator: $run_validator"
 
 }
 
 # Parse command-line options, standardized options for all clients
 run_node_parse_options "$@"
 
+script_dir="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 # source variables
-source "$script_dir/network/$network/$execution_client-$consensus_client/vars.env"
+set -a 
+source "$script_dir/network/$network/$execution_client-$consensus_client/shared.env"
+set +a
 
+create_data_dir_if_not_exists $SHARED_CONFIG_DATA_DIR
+create_secrets_file_if_not_exists $SHARED_CONFIG_SECRETS_FILE
 
-create_data_dir_if_not_exists $data_dir
-create_secrets_file_if_not_exists $secrets_file
 
 script=""
 
+latest_execution_client_version=${latest_clients["$execution_client"]}
+latest_consensus_client_version=${latest_clients["$consensus_client"]}
+
 if [ "$run" = "execution" ]; then 
-    script="$script_dir/clients/$execution_client.sh"
+    script="$script_dir/clients/$execution_client/$latest_execution_client_version/run-$execution_client.sh"
+    chmod +x "$script"
+    $script --env-file "$script_dir/network/$network/$execution_client-$consensus_client/$execution_client.env"
+
 else 
-    script="$script_dir/clients/$consensus_client.sh"
+    script="$script_dir/clients/$consensus_client/$latest_consensus_client_version/run-$consensus_client.sh"
+    chmod +x "$script"
+    $script --env-file "$script_dir/network/$network/$execution_client-$consensus_client/$consensus_client.env"
+
 fi 
-
-chmod +x "$script"
-
-$script --data-dir $data_dir \
-        --secrets-file $secrets_file \
-        --endpoint-url $endpoint_url \
-        --checkpoint-sync-url $checkpoint_sync_url \
-        --network $network \
-        --run-validator $run_validator
-

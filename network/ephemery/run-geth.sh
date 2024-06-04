@@ -13,12 +13,12 @@ error_handler() {
 trap 'error_handler ${LINENO} "${BASH_COMMAND}"' ERR
 
 network=ephemery
-data_dir=/home/eniko/data/geth/$network
+data_dir=$HOME/data/geth/$network
 
 mkdir -p "$data_dir"
 echo $data_dir
 
-ephemery_dir=/home/eniko/ephemary
+ephemery_dir=$HOME/ephemary
 
 if [ ! -d "$ephemery_dir" ]; then 
   wget https://github.com/ephemery-testnet/ephemery-genesis/releases/download/ephemery-111/testnet-all.tar.gz

@@ -14,7 +14,7 @@ trap 'error_handler ${LINENO} "${BASH_COMMAND}"' ERR
 
 valid_execution_clients=("besu" "erigon" "geth" "nethermind")
 valid_consensus_clients=("lighthouse" "lodestar" "nimbus-eth2" "prysm" "teku")
-valid_network_options=("mainnet" "sepolia")
+valid_network_options=("mainnet" "sepolia" "ephemery")
 
 declare -A latest_clients
 
@@ -45,7 +45,7 @@ create_secrets_file_if_not_exists(){
 
 # Function to display usage information
 run_node_usage() {
-    echo "Usage: $0 [ --network mainnet|sepolia ]\
+    echo "Usage: $0 [ --network mainnet|sepolia|ephemery ]\
                     [ --consensus-client lighthouse|lodestar|nimbus-eth2|prysm|teku ] \
                     [ --execution-client besu|erigon|geth|nethermind ] \
                     [ --run execution|consensus ] \
@@ -195,6 +195,20 @@ set +a
 create_data_dir_if_not_exists $SHARED_CONFIG_DATA_DIR
 create_secrets_file_if_not_exists $SHARED_CONFIG_SECRETS_FILE
 
+if [ "$network" == "ephemery" ]; then 
+    echo "fetching ephemery state"
+    # TODO option to reset
+    # rm -rf $ephemery_dir
+    if [ ! -d "$SHARED_CONFIG_TESTNET_DIR" ];then
+        wget -q https://github.com/ephemery-testnet/ephemery-genesis/releases/download/ephemery-111/testnet-all.tar.gz
+        mkdir $SHARED_CONFIG_TESTNET_DIR && tar -xzf testnet-all.tar.gz -C $SHARED_CONFIG_TESTNET_DIR
+        rm testnet-all.tar.gz 
+    fi 
+    SHARED_CONFIG_NETWORK_ID=$(cat $SHARED_CONFIG_TESTNET_DIR/genesis.json | grep chainId | tr -d ',' | sed 's/"chainId"://g' | tr -d '[:space:]')
+    SHARED_CONFIG_BOOTNODES=$(awk '{printf "%s,", $0}' $SHARED_CONFIG_TESTNET_DIR/boot_enode.txt | sed 's/,$//')
+    export SHARED_CONFIG_NETWORK_ID
+    export SHARED_CONFIG_BOOTNODES
+fi
 
 script=""
 
@@ -210,5 +224,4 @@ else
     script="$script_dir/clients/$consensus_client/$latest_consensus_client_version/run-$consensus_client.sh"
     chmod +x "$script"
     $script --env-file "$script_dir/network/$network/$execution_client-$consensus_client/$consensus_client.env"
-
 fi 

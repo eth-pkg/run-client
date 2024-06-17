@@ -14,7 +14,7 @@ trap 'error_handler ${LINENO} "${BASH_COMMAND}"' ERR
 
 valid_execution_clients=("besu" "erigon" "geth" "nethermind")
 valid_consensus_clients=("lighthouse" "lodestar" "nimbus-eth2" "prysm" "teku")
-valid_network_options=("mainnet" "sepolia" "ephemery" "holesky")
+valid_network_options=("mainnet" "sepolia" "ephemery" "holesky" "devnet")
 
 declare -A latest_clients
 
@@ -45,7 +45,7 @@ create_secrets_file_if_not_exists(){
 
 # Function to display usage information
 run_node_usage() {
-    echo "Usage: $0 [ --network mainnet|sepolia|ephemery ]\
+    echo "Usage: $0 [ --network mainnet|sepolia|ephemery|holesky|devnet ]\
                     [ --consensus-client lighthouse|lodestar|nimbus-eth2|prysm|teku ] \
                     [ --execution-client besu|erigon|geth|nethermind ] \
                     [ --run execution|consensus ] \

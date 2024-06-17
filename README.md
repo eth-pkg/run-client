@@ -9,12 +9,18 @@ Open two terminals and execute the following commands:
 
 Terminal 1:
 ```bash 
-bash run-client.sh --network <network> --consensus-client <consensus_client> --execution-client <execution_client> --run execution 
+bash run-client.sh --network <network> \
+                   --consensus-client <consensus_client> \
+                   --execution-client <execution_client> \
+                   --run execution 
 ```
 
 Terminal 2:
 ```bash
-bash run-client.sh --network <network> --consensus-client <consensus_client>  --execution-client <execution_client> --run consensus 
+bash run-client.sh --network <network> \
+                   --consensus-client <consensus_client> \
+                   --execution-client <execution_client> \
+                   --run consensus 
 ```
 
 For running a node on:

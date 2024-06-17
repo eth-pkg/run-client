@@ -75,6 +75,14 @@ append_option() {
   fi
 }
 
+append_flag(){
+ local option=$1
+  local value=$2
+  if [ "$value" = "true" ]; then
+    OPTIONS="$OPTIONS $option"
+  fi 
+}
+
 append_option "--checkpoint-sync-url" "$TEKU_CLI_CHECKPOINT_SYNC_URL"
 append_option "--eth1-deposit-contract-address" "$TEKU_CLI_ETH1_DEPOSIT_CONTRACT_ADDRESS"
 append_option "--genesis-state" "$TEKU_CLI_GENESIS_STATE"

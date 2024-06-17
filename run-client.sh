@@ -205,10 +205,30 @@ if [ "$network" == "ephemery" ]; then
         rm testnet-all.tar.gz 
     fi 
     SHARED_CONFIG_NETWORK_ID=$(cat $SHARED_CONFIG_TESTNET_DIR/genesis.json | grep chainId | tr -d ',' | sed 's/"chainId"://g' | tr -d '[:space:]')
-    SHARED_CONFIG_BOOTNODES=$(awk '{printf "%s,", $0}' $SHARED_CONFIG_TESTNET_DIR/boot_enode.txt | sed 's/,$//')
+    ENR_FILE="$SHARED_CONFIG_TESTNET_DIR/boot_enr.txt"
+    SHARED_CONFIG_BOOTNODES=$(awk '{printf "%s,", $0}' "$ENR_FILE" | sed -e "s/- enr/enr/g" -e 's/,$//')
+    SHARED_CONFIG_BOOTNODES_ENODE=$(awk '{printf "%s,", $0}' $SHARED_CONFIG_TESTNET_DIR/boot_enode.txt | sed 's/,$//')
+
     export SHARED_CONFIG_NETWORK_ID
     export SHARED_CONFIG_BOOTNODES
+    export SHARED_CONFIG_BOOTNODES_ENODE
 fi
+
+if [ "$network" == "ephemery" ]; then 
+    if [ "$consensus_client" == "nimbus-eth2" ]; then 
+        echo "nimbus-eth2 does not support ephemery network"
+        exit 1
+    fi 
+    if [ "$execution_client" == "nethermind" ]; then 
+        echo "nethermind does not support ephemery network"
+        exit 1
+    fi 
+
+    if [ "$execution_client" == "besu" ]; then 
+        echo "besu does not support ephemery network"
+        exit 1
+    fi 
+fi 
 
 script=""
 

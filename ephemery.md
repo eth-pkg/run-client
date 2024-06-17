@@ -224,6 +224,7 @@ Run clients on ephemery network
 <details>
   <summary>geth - nimbus-eth2</summary>
 
+  Not supported
   Open two terminals and execute the following commands:
 
   Terminal 1:

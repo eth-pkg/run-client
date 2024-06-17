@@ -14,7 +14,7 @@ trap 'error_handler ${LINENO} "${BASH_COMMAND}"' ERR
 
 valid_execution_clients=("besu" "erigon" "geth" "nethermind")
 valid_consensus_clients=("lighthouse" "lodestar" "nimbus-eth2" "prysm" "teku")
-valid_network_options=("mainnet" "sepolia" "ephemery")
+valid_network_options=("mainnet" "sepolia" "ephemery" "holesky")
 
 declare -A latest_clients
 

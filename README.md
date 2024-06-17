@@ -27,4 +27,4 @@ For running a node on:
 - Mainnet, see [mainnet.md](mainnet.md)
 - Sepolia, see [sepolia.md](sepolia.md)
 - Holesky, see [holesky.md](holesky.md)
-- Ephemery, see [holesky.md](ephemery.md)
+- Ephemery, see [ephemery.md](ephemery.md)

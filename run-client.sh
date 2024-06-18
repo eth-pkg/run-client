@@ -209,7 +209,6 @@ if [ "$network" == "ephemery" ]; then
 fi
 
 if [ "$network" == "devnet" ]; then 
-    TEMPLATE_DIR="./devnet/template"
     CHAIN_ID=${CHAIN_ID:-32382}
     GENESIS_TIME_DELAY=15
     PRYSMCTL=/usr/lib/eth-node-prysm/bin/prysmctl
@@ -218,22 +217,20 @@ if [ "$network" == "devnet" ]; then
     echo "creating genesis state"
     # TODO option to reset
     if [ ! -d "$SHARED_CONFIG_TESTNET_DIR" ];then
-        cp -R "$TEMPLATE_DIR" "$SHARED_CONFIG_TESTNET_DIR"
-        # 1. Create beacon chain genesis state
-        $PRYSMCTL testnet generate-genesis --fork=capella \
-                                   --num-validators=$SHARED_NUM_VALIDATORS \
-                                   --genesis-time-delay=$GENESIS_TIME_DELAY \
-                                   --output-ssz=$SHARED_CONFIG_GENESIS_STATE \
-                                   --chain-config-file=$SHARED_CHAINCONFIG \
-                                   --geth-genesis-json-in=$SHARED_CONFIG_GENESIS_FILE \
-                                   --geth-genesis-json-out=$SHARED_CONFIG_GENESIS_FILE
+
+        sudo docker run --rm -it -v $SHARED_CONFIG_DATA_DIR:/data \
+        -v $PWD/devnet/config/defaults.env:/config/values.env \
+        ethpandaops/ethereum-genesis-generator:latest all
+
+        sudo chown -R "$(id -u):$(id -g)" $SHARED_CONFIG_DATA_DIR/custom_config_data
+        mv $SHARED_CONFIG_DATA_DIR/custom_config_data $SHARED_CONFIG_TESTNET_DIR
          
-        touch "$SHARED_CONFIG_DATA_DIR/password.txt"
+        touch "$SHARED_CONFIG_DATA_DIR/geth_password.txt"
 
         # 3. Initialize Geth genesis configuration
         geth --datadir=$SHARED_CONFIG_DATA_DIR init $SHARED_CONFIG_GENESIS_FILE 
-        cp "$SHARED_CONFIG_TESTNET_DIR/execution/sk.json" "$SHARED_CONFIG_DATA_DIR"
-        cp -R "$SHARED_CONFIG_TESTNET_DIR/execution/keystore" "$SHARED_CONFIG_DATA_DIR"
+        cp "./devnet/sk.json" "$SHARED_CONFIG_DATA_DIR"
+        cp -R "./devnet/keystore" "$SHARED_CONFIG_DATA_DIR"
 
 
     fi 

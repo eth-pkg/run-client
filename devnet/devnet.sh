@@ -10,17 +10,15 @@ TEMPLATE_DIR="./devnet/template"
 DIR=/tmp/devnet
 LOG_DIR=/tmp/devnet/log
 
-CONSENSUS_DIR="$DIR/consensus"
-EXECUTION_DIR="$DIR/execution"
-GENESIS_SSZ="$CONSENSUS_DIR/genesis.ssz"
-CONFIG_YML="$CONSENSUS_DIR/config.yml"
-GENESIS_JSON="$EXECUTION_DIR/genesis.json"
-JWT_SECRET="$EXECUTION_DIR/jwtsecret"
-GETH_PASSWORD="$EXECUTION_DIR/geth_password.txt"
+TESTNET_DIR=$DIR/testnet
+GENESIS_SSZ="$TESTNET_DIR/genesis.ssz"
+CONFIG_YML="$TESTNET_DIR/config.yaml"
+GENESIS_JSON="$TESTNET_DIR/genesis.json"
+JWT_SECRET="$DIR/jwt/jwtsecret"
+GETH_PASSWORD="$DIR/geth_password.txt"
 
 BEACON_CHAIN_CMD=/usr/lib/eth-node-prysm/bin/beacon-chain
 VALIDATOR_CMD=/usr/lib/eth-node-prysm/bin/validator
-PRYSMCTL=/usr/lib/eth-node-prysm/bin/prysmctl
 
 ENDPOINT_URL=http://localhost:8551
 FEE_RECEIPENT_ADDRESS=0x123463a4b065722e99115d6c222f267d9cabb524
@@ -42,23 +40,21 @@ pkill -f $(basename $VALIDATOR_CMD)
 pkill -f $(basename $PRYSMCTL)
 
 
-# 1. Create beacon chain genesis state
-$PRYSMCTL testnet generate-genesis --fork=capella \
-                                   --num-validators=$NUM_VALIDATORS \
-                                   --genesis-time-delay=$GENESIS_TIME_DELAY \
-                                   --output-ssz=$GENESIS_SSZ \
-                                   --chain-config-file=$CONFIG_YML \
-                                   --geth-genesis-json-in=$GENESIS_JSON \
-                                   --geth-genesis-json-out=$GENESIS_JSON
-# 2. Remove Geth database
-rm -rf $EXECUTION_DIR/geth
+if [ ! -d "$TESTNET_DIR" ];then 
+    sudo docker run --rm -it -v $DIR:/data \
+    -v $PWD/devnet/config/defaults.env:/config/values.env \
+    ethpandaops/ethereum-genesis-generator:latest all
+
+    sudo chown -R $UID:$GID $DIR/custom_config_data
+    mv $DIR/custom_config_data $TESTNET_DIR
+fi 
 
 # 3. Initialize Geth genesis configuration
-geth --datadir=$EXECUTION_DIR init $GENESIS_JSON
+geth --datadir=$DIR init $GENESIS_JSON
 
 
 # 4. Run Prysm beacon chain
-nohup $BEACON_CHAIN_CMD  --datadir=$CONSENSUS_DIR/beacondata \
+nohup $BEACON_CHAIN_CMD  --datadir=$DIR/beacondata \
                          --min-sync-peers=0 \
                          --genesis-state=$GENESIS_SSZ \
                          --bootstrap-node= \
@@ -84,6 +80,11 @@ BEACON_CHAIN_PID=$!
 
 echo "Prysm beacon-chain started with PID $BEACON_CHAIN_PID"
 
+# TODO no clue what are these, and how to generate these
+cp ./devnet/geth_password.txt $DIR 
+cp ./devnet/sk.json $DIR 
+cp -R ./devnet/keystore $DIR 
+
 # 5. Run Geth execution client
 nohup geth --http \
            --http.api=eth,net,web3 \
@@ -96,7 +97,7 @@ nohup geth --http \
            --authrpc.vhosts=* \
            --authrpc.addr=0.0.0.0 \
            --authrpc.jwtsecret=$JWT_SECRET \
-           --datadir=$EXECUTION_DIR \
+           --datadir=$DIR \
            --allow-insecure-unlock \
            --unlock=$FEE_RECEIPENT_ADDRESS \
            --password=$GETH_PASSWORD \
@@ -107,7 +108,7 @@ echo "Geth started with PID $GETH_PID"
 
 # 6. Run Prysm validator
 nohup $VALIDATOR_CMD  --beacon-rpc-provider=localhost:4000 \
-                      --datadir=$CONSENSUS_DIR/validatordata \
+                      --datadir=$DIR/validatordata \
                       --accept-terms-of-use \
                       --interop-num-validators=$NUM_VALIDATORS \
                       --interop-start-index=0 \

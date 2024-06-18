@@ -71,7 +71,7 @@ append_option() {
   local option=$1
   local value=$2
   if [ -n "$value" ]; then
-    OPTIONS="$OPTIONS $option $value"
+    OPTIONS="$OPTIONS $option=$value"
   fi
 }
 
@@ -123,7 +123,7 @@ append_flag "--save-invalid-block-temp" "$PRSYM_CLI_SAVE_INVALID_BLOCK_TEMP"
 append_flag "--sepolia" "$PRSYM_CLI_SEPOLIA"
 append_flag "--slasher" "$PRSYM_CLI_SLASHER"
 append_flag "--interop-eth1data-votes" "$PRSYM_CLI_INTEROP_ETH1DATA_VOTES"
-
+append_flag "--force-clear-db" "$PRSYM_CLI_FORCE_CLEAR_DB"
 
 
 append_option "--api-timeout" "$PRSYM_CLI_API_TIMEOUT"
@@ -133,7 +133,6 @@ append_option "--clear-db" "$PRSYM_CLI_CLEAR_DB"
 append_option "--config-file" "$PRSYM_CLI_CONFIG_FILE"
 append_option "--datadir" "$PRSYM_CLI_DATADIR"
 append_option "--e2e-config" "$PRSYM_CLI_E2E_CONFIG"
-append_option "--force-clear-db" "$PRSYM_CLI_FORCE_CLEAR_DB"
 append_option "--grpc-max-msg-size" "$PRSYM_CLI_GRPC_MAX_MSG_SIZE"
 append_option "--max-goroutines" "$PRSYM_CLI_MAX_GOROUTINES"
 append_option "--minimal-config" "$PRSYM_CLI_MINIMAL_CONFIG"

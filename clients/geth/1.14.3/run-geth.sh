@@ -72,7 +72,7 @@ append_option() {
   local option=$1
   local value=$2
   if [ -n "$value" ]; then
-    OPTIONS="$OPTIONS $option $value"
+    OPTIONS="$OPTIONS $option=$value"
   fi
 }
 
@@ -88,11 +88,12 @@ append_flag "--allow-insecure-unlock" "$GETH_CLI_ALLOW_INSECURE_UNLOCK"
 append_flag "--graphql" "$GETH_CLI_GRAPHQL"
 append_flag "--http" "$GETH_CLI_HTTP"
 append_flag "--ws" "$GETH_CLI_WS"
-append_flag "--dev" "$GETH_CLI_WS"
+append_flag "--dev" "$GETH_CLI_DEV"
 append_flag "--goerli" "$GETH_CLI_GOERLI"
 append_flag "--holesky" "$GETH_CLI_HOLESKY"
 append_flag "--mainnet" "$GETH_CLI_MAINNET"
 append_flag "--sepolia" "$GETH_CLI_SEPOLIA"
+append_flag "--nodiscover" "$GETH_CLI_NODISCOVER"
 
 append_option "--keystore" "$GETH_CLI_KEYSTORE"
 append_option "--lightkdf" "$GETH_CLI_LIGHTKDF"
@@ -225,7 +226,6 @@ append_option "--nat" "$GETH_CLI_NAT"
 append_option "--netrestrict" "$GETH_CLI_NETRESTRICT"
 append_option "--nodekey" "$GETH_CLI_NODEKEY"
 append_option "--nodekeyhex" "$GETH_CLI_NODEKEYHEX"
-append_option "--nodiscover" "$GETH_CLI_NODISCOVER"
 append_option "--port" "$GETH_CLI_PORT"
 append_option "--cache" "$GETH_CLI_CACHE"
 append_option "--cache.blocklogs" "$GETH_CLI_CACHE_BLOCKLOGS"

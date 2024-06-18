@@ -48,7 +48,7 @@ run_node_usage() {
     echo "Usage: $0 [ --network mainnet|sepolia|ephemery|holesky|devnet ]\
                     [ --consensus-client lighthouse|lodestar|nimbus-eth2|prysm|teku ] \
                     [ --execution-client besu|erigon|geth|nethermind ] \
-                    [ --run execution|consensus ] \
+                    [ --run execution|consensus|validator ] \
                     [ --run-validator ]"
     exit 1
 }
@@ -163,7 +163,7 @@ run_node_parse_options() {
     fi
 
 
-    if [[ "$run" != "consensus" && "$run" != "execution" ]]; then
+    if [[ "$run" != "consensus" && "$run" != "execution"  && "$run" != "validator"]]; then
         echo "run value must be consensus or execution"
         echo "provided value is: $run"
         run_node_usage
@@ -214,6 +214,40 @@ if [ "$network" == "ephemery" ]; then
     export SHARED_CONFIG_BOOTNODES_ENODE
 fi
 
+if [ "$network" == "devnet" ]; then 
+    TEMPLATE_DIR="./devnet/template"
+    CHAIN_ID=${CHAIN_ID:-32382}
+    GENESIS_TIME_DELAY=15
+    NUM_VALIDATORS=64
+    PRYSMCTL=/usr/lib/eth-node-prysm/bin/prysmctl
+
+    echo "creating genesis state"
+    # TODO option to reset
+    if [ ! -d "$SHARED_CONFIG_TESTNET_DIR" ];then
+        cp -R "$TEMPLATE_DIR" "$SHARED_CONFIG_TESTNET_DIR"
+        # 1. Create beacon chain genesis state
+        $PRYSMCTL testnet generate-genesis --fork=capella \
+                                   --num-validators=$NUM_VALIDATORS \
+                                   --genesis-time-delay=$GENESIS_TIME_DELAY \
+                                   --output-ssz=$SHARED_CONFIG_GENESIS_STATE \
+                                   --chain-config-file=$SHARED_CHAINCONFIG \
+                                   --geth-genesis-json-in=$SHARED_CONFIG_GENESIS_FILE \
+                                   --geth-genesis-json-out=$SHARED_CONFIG_GENESIS_FILE
+         
+        touch "$SHARED_CONFIG_DATA_DIR/password.txt"
+
+        # 3. Initialize Geth genesis configuration
+        geth --datadir=$SHARED_CONFIG_DATA_DIR init $SHARED_CONFIG_GENESIS_FILE 
+        cp "$SHARED_CONFIG_TESTNET_DIR/execution/sk.json" "$SHARED_CONFIG_DATA_DIR"
+        cp -R "$SHARED_CONFIG_TESTNET_DIR/execution/keystore" "$SHARED_CONFIG_DATA_DIR"
+
+
+    fi 
+    SHARED_CONFIG_NETWORK_ID=$CHAIN_ID
+
+    export SHARED_CONFIG_NETWORK_ID
+fi
+
 if [ "$network" == "ephemery" ]; then 
     if [ "$consensus_client" == "nimbus-eth2" ]; then 
         echo "nimbus-eth2 does not support ephemery network"
@@ -240,8 +274,12 @@ if [ "$run" = "execution" ]; then
     chmod +x "$script"
     $script --env-file "$script_dir/network/$network/$execution_client-$consensus_client/$execution_client.env"
 
-else 
+elif [ "$run" = "consensus"]
     script="$script_dir/clients/$consensus_client/$latest_consensus_client_version/run-$consensus_client.sh"
     chmod +x "$script"
     $script --env-file "$script_dir/network/$network/$execution_client-$consensus_client/$consensus_client.env"
+else 
+    script="$script_dir/clients/$consensus_client/$latest_consensus_client_version/run-validator.sh"
+    chmod +x "$script"
+    $script --env-file "$script_dir/network/$network/$execution_client-$consensus_client/validator.env"
 fi 

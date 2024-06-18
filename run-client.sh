@@ -45,11 +45,11 @@ create_secrets_file_if_not_exists(){
 
 # Function to display usage information
 run_node_usage() {
-    echo "Usage: $0 [ --network mainnet|sepolia|ephemery|holesky|devnet ]\
-                    [ --consensus-client lighthouse|lodestar|nimbus-eth2|prysm|teku ] \
-                    [ --execution-client besu|erigon|geth|nethermind ] \
-                    [ --run execution|consensus|validator ] \
-                    [ --run-validator ]"
+  echo "Usage: $0 [ --network mainnet|sepolia|ephemery|holesky|devnet ] \
+[ --consensus-client lighthouse|lodestar|nimbus-eth2|prysm|teku ] \
+[ --execution-client besu|erigon|geth|nethermind ] \
+[ --run execution|consensus|validator ] \
+[ --run-validator ]"
     exit 1
 }
 
@@ -105,8 +105,8 @@ run_node_parse_options() {
                 shift 2
                 ;;
             --run-validator)
-                run_validator="$2"
-                shift 2
+                run_validator=true
+                shift 1
                 ;;    
             --)
                 shift
@@ -163,15 +163,9 @@ run_node_parse_options() {
     fi
 
 
-    if [[ "$run" != "consensus" && "$run" != "execution"  && "$run" != "validator"]]; then
-        echo "run value must be consensus or execution"
+    if [[ "$run" != "consensus" && "$run" != "execution"  && "$run" != "validator" ]]; then
+        echo "run value must be consensus, execution or validator"
         echo "provided value is: $run"
-        run_node_usage
-    fi
-
-    if [[ "$run_validator" == true && "$run_validator" != false ]]; then
-        echo "run-validator value must be true or false"
-        echo "provided value is: $run_validator"
         run_node_usage
     fi
 
@@ -218,16 +212,16 @@ if [ "$network" == "devnet" ]; then
     TEMPLATE_DIR="./devnet/template"
     CHAIN_ID=${CHAIN_ID:-32382}
     GENESIS_TIME_DELAY=15
-    NUM_VALIDATORS=64
     PRYSMCTL=/usr/lib/eth-node-prysm/bin/prysmctl
 
+    create_data_dir_if_not_exists $SHARED_VALIDATOR_DATADIR
     echo "creating genesis state"
     # TODO option to reset
     if [ ! -d "$SHARED_CONFIG_TESTNET_DIR" ];then
         cp -R "$TEMPLATE_DIR" "$SHARED_CONFIG_TESTNET_DIR"
         # 1. Create beacon chain genesis state
         $PRYSMCTL testnet generate-genesis --fork=capella \
-                                   --num-validators=$NUM_VALIDATORS \
+                                   --num-validators=$SHARED_NUM_VALIDATORS \
                                    --genesis-time-delay=$GENESIS_TIME_DELAY \
                                    --output-ssz=$SHARED_CONFIG_GENESIS_STATE \
                                    --chain-config-file=$SHARED_CHAINCONFIG \
@@ -274,7 +268,7 @@ if [ "$run" = "execution" ]; then
     chmod +x "$script"
     $script --env-file "$script_dir/network/$network/$execution_client-$consensus_client/$execution_client.env"
 
-elif [ "$run" = "consensus"]
+elif [ "$run" = "consensus" ]; then 
     script="$script_dir/clients/$consensus_client/$latest_consensus_client_version/run-$consensus_client.sh"
     chmod +x "$script"
     $script --env-file "$script_dir/network/$network/$execution_client-$consensus_client/$consensus_client.env"

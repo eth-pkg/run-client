@@ -83,12 +83,6 @@ append_flag(){
   fi 
 }
 
-append_flag(){
-  local option=$1
-  if [ "$2" = "true" ]; then
-    OPTIONS="$OPTIONS $option"
-  fi 
-}
 
 append_flag "--accept-terms-of-use" "$PRSYM_CLI_ACCEPT_TERMS_OF_USE"
 append_flag "--disable-monitoring" "$PRSYM_CLI_DISABLE_MONITORING"

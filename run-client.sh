@@ -247,10 +247,6 @@ if [ "$network" == "devnet" ]; then
 fi
 
 if [ "$network" == "ephemery" ]; then 
-    if [ "$consensus_client" == "nimbus-eth2" ]; then 
-        echo "nimbus-eth2 does not support ephemery network"
-        exit 1
-    fi 
     if [ "$execution_client" == "nethermind" ]; then 
         echo "nethermind does not support ephemery network"
         exit 1

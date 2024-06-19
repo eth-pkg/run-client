@@ -81,7 +81,55 @@ append_flag(){
   fi 
 }
 
+append_flag "--keymanager" "$LODESTAR_CLI_VALIDATOR_KEYMANAGER"
+append_flag "--keymanager.auth" "$LODESTAR_CLI_VALIDATOR_KEYMANAGER_AUTH_ENABLED"
+append_option "--keymanager.tokenFile" "$LODESTAR_CLI_VALIDATOR_KEYMANAGER_TOKENFILE"
+append_option "--keymanager.port" "$LODESTAR_CLI_VALIDATOR_KEYMANAGER_PORT"
+append_option "--keymanager.address" "$LODESTAR_CLI_VALIDATOR_KEYMANAGER_ADDRESS"
+append_option "--keymanager.cors" "$LODESTAR_CLI_VALIDATOR_KEYMANAGER_CORS"
+
+append_flag "--builder" "$LODESTAR_CLI_VALIDATOR_BUILDER"
+append_option "--builder.selection" "$LODESTAR_CLI_VALIDATOR_BUILDER_SELECTION"
+append_option "--builder.boostFactor" "$LODESTAR_CLI_VALIDATOR_BUILDER_BOOSTFACTOR"
+
+append_option "--externalSigner.url" "$LODESTAR_CLI_VALIDATOR_EXTERNALSIGNER_URL"
+append_option "--externalSigner.pubkeys" "$LODESTAR_CLI_VALIDATOR_EXTERNALSIGNER_PUBKEYS"
+append_flag "--externalSigner.fetch" "$LODESTAR_CLI_VALIDATOR_EXTERNALSIGNER_FETCH"
+append_option "--externalSigner.fetchInterval" "$LODESTAR_CLI_VALIDATOR_EXTERNALSIGNER_FETCHINTERVAL"
+
+append_flag "--metrics" "$LODESTAR_CLI_VALIDATOR_METRICS"
+append_option "--metrics.port" "$LODESTAR_CLI_VALIDATOR_METRICS_PORT"
+append_option "--metrics.address" "$LODESTAR_CLI_VALIDATOR_METRICS_ADDRESS"
+
+append_option "--monitoring.endpoint" "$LODESTAR_CLI_VALIDATOR_MONITORING_ENDPOINT"
+append_option "--monitoring.interval" "$LODESTAR_CLI_VALIDATOR_MONITORING_INTERVAL"
+
+append_option "--dataDir" "$LODESTAR_CLI_VALIDATOR_DATADIR"
+append_option "--network" "$LODESTAR_CLI_VALIDATOR_NETWORK"
+append_option "--paramsFile" "$LODESTAR_CLI_VALIDATOR_PARAMSFILE"
+append_option "--terminal-total-difficulty-override" "$LODESTAR_CLI_VALIDATOR_TERMINAL_TOTAL_DIFFICULTY_OVERRIDE"
+append_option "--terminal-block-hash-override" "$LODESTAR_CLI_VALIDATOR_TERMINAL_BLOCK_HASH_OVERRIDE"
+append_option "--terminal-block-hash-epoch-override" "$LODESTAR_CLI_VALIDATOR_TERMINAL_BLOCK_HASH_EPOCH_OVERRIDE"
+append_option "--rcConfig" "$LODESTAR_CLI_VALIDATOR_RCCONFIG"
+append_option "--logLevel" "$LODESTAR_CLI_VALIDATOR_LOGLEVEL"
+append_option "--logFile" "$LODESTAR_CLI_VALIDATOR_LOGFILE"
+append_option "--logFileLevel" "$LODESTAR_CLI_VALIDATOR_LOGFILELEVEL"
+append_option "--logFileDailyRotate" "$LODESTAR_CLI_VALIDATOR_LOGFILEDAILYROTATE"
+append_option "--beaconNodes" "$LODESTAR_CLI_VALIDATOR_BEACONNODES"
+append_flag "--force" "$LODESTAR_CLI_VALIDATOR_FORCE"
+append_option "--graffiti" "$LODESTAR_CLI_VALIDATOR_GRAFFITI"
+append_option "--proposerSettingsFile" "$LODESTAR_CLI_VALIDATOR_PROPOSERSETTINGSFILE"
+append_option "--suggestedFeeRecipient" "$LODESTAR_CLI_VALIDATOR_SUGGESTEDFEERECIPIENT"
+append_flag "--strictFeeRecipientCheck" "$LODESTAR_CLI_VALIDATOR_STRICTFEERECIPIENTCHECK"
+append_option "--defaultGasLimit" "$LODESTAR_CLI_VALIDATOR_DEFAULTGASLIMIT"
+append_flag "--useProduceBlockV3" "$LODESTAR_CLI_VALIDATOR_USEPRODUCEBLOCKV3"
+append_option "--broadcastValidation" "$LODESTAR_CLI_VALIDATOR_BROADCASTVALIDATION"
+append_flag "--blindedLocal" "$LODESTAR_CLI_VALIDATOR_BLINDEDLOCAL"
+append_option "--importKeystores" "$LODESTAR_CLI_VALIDATOR_IMPORTKEYSTORES"
+append_option "--importKeystoresPassword" "$LODESTAR_CLI_VALIDATOR_IMPORTKEYSTORESPASSWORD"
+append_flag "--doppelgangerProtection" "$LODESTAR_CLI_VALIDATOR_DOPPELGANGERPROTECTIONENABLED"
+append_flag "--distributed" "$LODESTAR_CLI_VALIDATOR_DISTRIBUTED"
 
 echo "Using Options: $OPTIONS"
 
-/usr/lib/eth-node-lodestar/bin/validator $OPTIONS
+docker run chainsafe/lodestar validator $OPTIONS

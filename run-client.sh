@@ -216,9 +216,9 @@ if [ "$network" == "devnet" ]; then
     PRYSMCTL=/usr/lib/eth-node-prysm/bin/prysmctl
 
     create_data_dir_if_not_exists $SHARED_VALIDATOR_DATADIR
-    echo "creating genesis state"
     # TODO option to reset
     if [ ! -d "$SHARED_CONFIG_TESTNET_DIR" ];then
+        echo "creating genesis state"
 
         docker run --rm -it -v $SHARED_CONFIG_DATA_DIR:/data \
         -v $PWD/devnet/config/defaults.env:/config/values.env \

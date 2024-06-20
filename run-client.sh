@@ -252,10 +252,6 @@ if [ "$network" == "ephemery" ]; then
         exit 1
     fi 
 
-    if [ "$execution_client" == "besu" ]; then 
-        echo "besu does not support ephemery network"
-        exit 1
-    fi 
 fi 
 
 script=""

@@ -7,7 +7,7 @@ display_help() {
     echo "Usage: $0 [OPTIONS]"
     echo ""
     echo "Options:"
-    echo "  --env-file FILE, -e FILE   Path to .env formatted configuration file."   
+    echo "  --env-file FILE, -e FILE   Path to .conf formatted configuration file."   
     echo "  --help, -h                    Displays this help text and exits."
     echo "  --version, -v                 Displays the version and exits."
     exit 0

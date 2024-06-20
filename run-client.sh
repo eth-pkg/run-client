@@ -185,7 +185,7 @@ run_node_parse_options "$@"
 script_dir="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 # source variables
 set -a 
-source "$script_dir/network/$network/$execution_client-$consensus_client/shared.env"
+source "$script_dir/network/$network/$execution_client-$consensus_client/shared.conf"
 set +a
 
 create_data_dir_if_not_exists $SHARED_CONFIG_DATA_DIR
@@ -258,20 +258,20 @@ export SHARED_RUN
 if [ "$run" = "execution" ]; then 
     script="$script_dir/clients/$execution_client/$latest_execution_client_version/run-$execution_client.sh"
     chmod +x "$script"
-    $script --env-file "$script_dir/network/$network/$execution_client-$consensus_client/$execution_client.env"
+    $script --env-file "$script_dir/network/$network/$execution_client-$consensus_client/$execution_client.conf"
 
 elif [ "$run" = "consensus" ]; then 
     script="$script_dir/clients/$consensus_client/$latest_consensus_client_version/run-$consensus_client.sh"
     chmod +x "$script"
-    $script --env-file "$script_dir/network/$network/$execution_client-$consensus_client/$consensus_client.env"
+    $script --env-file "$script_dir/network/$network/$execution_client-$consensus_client/$consensus_client.conf"
 elif [ "$run" = "validator" ]; then 
     script="$script_dir/clients/$consensus_client/$latest_consensus_client_version/run-validator.sh"
     chmod +x "$script"
-    $script --env-file "$script_dir/network/$network/$execution_client-$consensus_client/validator.env"
+    $script --env-file "$script_dir/network/$network/$execution_client-$consensus_client/validator.conf"
 elif [ "$run" = "bootnode" ]; then 
     script="$script_dir/clients/$consensus_client/$latest_consensus_client_version/run-$consensus_client.sh"
     chmod +x "$script"
-    $script --env-file "$script_dir/network/$network/$execution_client-$consensus_client/bootnode.env"   
+    $script --env-file "$script_dir/network/$network/$execution_client-$consensus_client/bootnode.conf"   
 else 
     echo "unsupported option"
     exit 1     

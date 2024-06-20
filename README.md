@@ -1,7 +1,8 @@
 # run-client
 Ethereum client scripts to run clients, but with standardized options
 
-Sure! Here is the updated script with the additional instructions:
+NOTE: This repository is in active development. Code can change drasticially,
+and except bugs. 
 
 ## Running a node 
 
@@ -23,8 +24,20 @@ bash run-client.sh --network <network> \
                    --run consensus 
 ```
 
+## Running with simplified approach
+
+This will run a node with selected network and clients. Note this is intended as examples. 
+
+```
+bash run-node.sh --network <network> \
+                   --consensus-client <consensus_client> \
+                   --execution-client <execution_client>
+```
+
+
 For running a node on:
 - Mainnet, see [mainnet.md](mainnet.md)
 - Sepolia, see [sepolia.md](sepolia.md)
 - Holesky, see [holesky.md](holesky.md)
 - Ephemery, see [ephemery.md](ephemery.md)
+- Local minimum devnet, see [devnet.md](devnet.md)

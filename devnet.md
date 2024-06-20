@@ -372,7 +372,7 @@ Run clients on private devnet
 <details>
   <summary>geth - lighthouse</summary>
 
-  Open four terminals and execute the following commands:
+  Open three terminals and execute the following commands:
 
   Terminal 1:
   ```bash 
@@ -388,19 +388,11 @@ Run clients on private devnet
   bash run-client.sh --network devnet \
                      --consensus-client lighthouse \
                      --execution-client geth \
-                     --run bootnode \
-                     --with-validator 
-
-  Terminal 3:
-  ```bash
-  bash run-client.sh --network devnet \
-                     --consensus-client lighthouse \
-                     --execution-client geth \
                      --run consensus \
                      --with-validator 
   ```
 
-  Terminal 4:
+  Terminal 3:
   ```bash
   bash run-client.sh --network devnet \
                      --consensus-client lighthouse \
@@ -430,20 +422,11 @@ Run clients on private devnet
   bash run-client.sh --network devnet \
                      --consensus-client lodestar \
                      --execution-client geth \
-                     --run bootnode \
-                     --with-validator
-  ```
-
-  Terminal 3:
-  ```bash
-  bash run-client.sh --network devnet \
-                     --consensus-client lodestar \
-                     --execution-client geth \
                      --run consensus \
                      --with-validator
   ```
 
-  Terminal 4:
+  Terminal 3:
   ```bash
   bash run-client.sh --network devnet \
                      --consensus-client lodestar \
@@ -492,7 +475,6 @@ Run clients on private devnet
   <summary>geth - prysm</summary>
 
   Open three terminals and execute the following commands:
-  Prysm does not require the presence of bootnode. 
 
   Terminal 1:
   ```bash 

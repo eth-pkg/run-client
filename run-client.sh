@@ -246,14 +246,6 @@ if [ "$network" == "devnet" ]; then
     export SHARED_CONFIG_NETWORK_ID
 fi
 
-if [ "$network" == "ephemery" ]; then 
-    if [ "$execution_client" == "nethermind" ]; then 
-        echo "nethermind does not support ephemery network"
-        exit 1
-    fi 
-
-fi 
-
 script=""
 
 latest_execution_client_version=${latest_clients["$execution_client"]}

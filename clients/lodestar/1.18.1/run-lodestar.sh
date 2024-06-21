@@ -6,7 +6,7 @@ display_help() {
     echo "Usage: $0 [OPTIONS]"
     echo ""
     echo "Options:"
-    echo "  --env-file FILE, -e FILE   Path to .env formatted configuration file."    
+    echo "  --env-file FILE, -e FILE   Path to .conf formatted configuration file."    
     echo "  --help, -h                    Displays this help text and exits."
     echo "  --version, -v                 Displays the version and exits."
     exit 0
@@ -87,7 +87,7 @@ append_flag "--forceCheckpointSync" "$LODESTAR_CLI_BN_FORCE_CHECKPOINT_SYNC"
 append_flag "--rest" "$LODESTAR_CLI_BN_REST"
 append_flag "--rest.swaggerUI" "$LODESTAR_CLI_BN_REST_SWAGGER_UI"
 append_flag "--emitPayloadAttributes" "$LODESTAR_CLI_BN_EMIT_PAYLOAD_ATTRIBUTES"
-append_flag "--eth1" "$LODESTAR_CLI_BN_ETH1"
+append_option "--eth1" "$LODESTAR_CLI_BN_ETH1"
 append_flag "--builder" "$LODESTAR_CLI_BN_BUILDER"
 append_flag "--metrics" "$LODESTAR_CLI_BN_METRICS"
 append_flag "--discv5" "$LODESTAR_CLI_BN_DISCV5"
@@ -100,7 +100,11 @@ append_flag "--validatorMonitorLogs" "$LODESTAR_CLI_BN_VALIDATOR_MONITOR_LOGS"
 append_option "--checkpointSyncUrl" "$LODESTAR_CLI_BN_CHECKPOINT_SYNC_URL"
 append_option "--checkpointState" "$LODESTAR_CLI_BN_CHECKPOINT_STATE"
 append_option "--wssCheckpoint" "$LODESTAR_CLI_BN_WSS_CHECKPOINT"
-append_option "--rest.namespace" "$LODESTAR_CLI_BN_REST_NAMESPACE"
+if [ "$LODESTAR_CLI_DEV_REST_NAMESPACE" == "*" ]; then
+    OPTIONS="$OPTIONS --rest.namespace '*'"
+else  
+    append_option "--rest.namespace" "$LODESTAR_CLI_DEV_REST_NAMESPACE"
+fi 
 append_option "--rest.cors" "$LODESTAR_CLI_BN_REST_CORS"
 append_option "--rest.address" "$LODESTAR_CLI_BN_REST_ADDRESS"
 append_option "--rest.port" "$LODESTAR_CLI_BN_REST_PORT"
@@ -147,7 +151,10 @@ append_option "--logLevel" "$LODESTAR_CLI_BN_LOG_LEVEL"
 append_option "--logFile" "$LODESTAR_CLI_BN_LOG_FILE"
 append_option "--logFileLevel" "$LODESTAR_CLI_BN_LOG_FILE_LEVEL"
 append_option "--logFileDailyRotate" "$LODESTAR_CLI_BN_LOG_FILE_DAILY_ROTATE"
+# TODO lodestar undocumented options
+append_option "--eth1.depositContractDeployBlock" "$LODESTAR_CLI_ETH1_DEPOSIT_CONTRACT_DEPLOY_BLOCK"
+append_option "--network.connectToDiscv5Bootnodes" "$LODESTAR_CLI_NETWORK_CONNECT_TO_DISCV5_BOOTNODES"
+append_option "--genesisStateFile" "$LODESTAR_CLI_BN_GENSIS_STATE_FILE"
 
-echo "Using Options: $OPTIONS"
-
+echo "Starting lodestar beacon $OPTIONS"
 lodestar beacon $OPTIONS

@@ -7,7 +7,7 @@ display_help() {
     echo "Usage: $0 [OPTIONS]"
     echo ""
     echo "Options:"
-    echo "  --env-file FILE, -e FILE   Path to .env formatted configuration file."   
+    echo "  --env-file FILE, -e FILE   Path to .conf formatted configuration file."   
     echo "  --help, -h                    Displays this help text and exits."
     echo "  --version, -v                 Displays the version and exits."
     exit 0
@@ -73,7 +73,7 @@ append_option() {
   local option=$1
   local value=$2
   if [ -n "$value" ]; then
-    OPTIONS="$OPTIONS $option $value"
+    OPTIONS="$OPTIONS $option=$value"
   fi
 }
 
@@ -241,6 +241,9 @@ append_option "--rpc-gas-cap" "$BESU_CLI_RPC_GAS_CAP"
 append_option "--rpc-max-logs-range" "$BESU_CLI_RPC_MAX_LOGS_RANGE"
 append_option "--rpc-max-trace-filter-range" "$BESU_CLI_RPC_MAX_TRACE_FILTER_RANGE"
 
-echo "Using Options: $OPTIONS"
+# TODO missing options
+append_option "--bonsai-limit-trie-logs-enabled" "$BESU_CLI_BONSAI_LIMIT_TRIE_LOGS_ENABLED"
+
+echo "Running: besu $OPTIONS"
 
 besu $OPTIONS

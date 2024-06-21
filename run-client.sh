@@ -14,7 +14,8 @@ trap 'error_handler ${LINENO} "${BASH_COMMAND}"' ERR
 
 valid_execution_clients=("besu" "erigon" "geth" "nethermind")
 valid_consensus_clients=("lighthouse" "lodestar" "nimbus-eth2" "prysm" "teku")
-valid_network_options=("mainnet" "sepolia" "ephemery" "holesky")
+valid_network_options=("mainnet" "sepolia" "ephemery" "holesky" "testnet")
+valid_run_options=("execution" "consensus" "validator" "bootnode")
 
 declare -A latest_clients
 
@@ -45,11 +46,12 @@ create_secrets_file_if_not_exists(){
 
 # Function to display usage information
 run_node_usage() {
-    echo "Usage: $0 [ --network mainnet|sepolia|ephemery ]\
-                    [ --consensus-client lighthouse|lodestar|nimbus-eth2|prysm|teku ] \
-                    [ --execution-client besu|erigon|geth|nethermind ] \
-                    [ --run execution|consensus ] \
-                    [ --run-validator ]"
+  echo "Usage: $0 [ --network mainnet|sepolia|ephemery|holesky|devnet ] \
+[ --consensus-client lighthouse|lodestar|nimbus-eth2|prysm|teku ] \
+[ --execution-client besu|erigon|geth|nethermind ] \
+[ --run execution|consensus|validator|bootnode ] \
+[ --with-validator ]
+"
     exit 1
 }
 
@@ -79,7 +81,7 @@ run_node_parse_options() {
                             ,consensus-client:\
                             ,execution-client:\
                             ,run:\
-                            ,run-validator" -n "$0" -- "$@")
+                            ,with-validator" -n "$0" -- "$@")
     if [ $? != 0 ]; then
         run_node_usage
     fi
@@ -104,10 +106,10 @@ run_node_parse_options() {
                 run="$2"
                 shift 2
                 ;;
-            --run-validator)
-                run_validator="$2"
-                shift 2
-                ;;    
+            --with-validator)
+                run_validator=true
+                shift 1
+                ;;       
             --)
                 shift
                 break
@@ -162,17 +164,11 @@ run_node_parse_options() {
         fi
     fi
 
-
-    if [[ "$run" != "consensus" && "$run" != "execution" ]]; then
-        echo "run value must be consensus or execution"
-        echo "provided value is: $run"
-        run_node_usage
-    fi
-
-    if [[ "$run_validator" == true && "$run_validator" != false ]]; then
-        echo "run-validator value must be true or false"
-        echo "provided value is: $run_validator"
-        run_node_usage
+    if [[ -n "$run" ]]; then
+        if ! is_valid_option "$run" "${valid_run_options[@]}"; then
+            echo "Invalid run: $run"
+            usage
+        fi
     fi
 
     echo "Network: $network"
@@ -189,7 +185,7 @@ run_node_parse_options "$@"
 script_dir="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 # source variables
 set -a 
-source "$script_dir/network/$network/$execution_client-$consensus_client/shared.env"
+source "$script_dir/network/$network/$execution_client-$consensus_client/shared.conf"
 set +a
 
 create_data_dir_if_not_exists $SHARED_CONFIG_DATA_DIR
@@ -214,34 +210,69 @@ if [ "$network" == "ephemery" ]; then
     export SHARED_CONFIG_BOOTNODES_ENODE
 fi
 
-if [ "$network" == "ephemery" ]; then 
-    if [ "$consensus_client" == "nimbus-eth2" ]; then 
-        echo "nimbus-eth2 does not support ephemery network"
-        exit 1
-    fi 
-    if [ "$execution_client" == "nethermind" ]; then 
-        echo "nethermind does not support ephemery network"
-        exit 1
-    fi 
+if [ "$network" == "devnet" ]; then 
+    CHAIN_ID=${CHAIN_ID:-32382}
+    GENESIS_TIME_DELAY=15
+    PRYSMCTL=/usr/lib/eth-node-prysm/bin/prysmctl
 
-    if [ "$execution_client" == "besu" ]; then 
-        echo "besu does not support ephemery network"
-        exit 1
+    create_data_dir_if_not_exists $SHARED_VALIDATOR_DATADIR
+    # TODO option to reset
+    if [ ! -d "$SHARED_CONFIG_TESTNET_DIR" ];then
+        echo "creating genesis state"
+
+        docker run --rm -it -v $SHARED_CONFIG_DATA_DIR:/data \
+        -v $PWD/devnet/config/defaults.env:/config/values.env \
+        ethpandaops/ethereum-genesis-generator:latest all
+
+        mv $SHARED_CONFIG_DATA_DIR/custom_config_data $SHARED_CONFIG_TESTNET_DIR
+        sudo chown -R "$(id -u):$(id -g)" $SHARED_CONFIG_TESTNET_DIR
+         
+        touch "$SHARED_CONFIG_DATA_DIR/geth_password.txt"
+
+        if [ "$execution_client" = "geth" ];then 
+            # 3. Initialize Geth genesis configuration
+            geth --datadir=$SHARED_CONFIG_DATA_DIR init $SHARED_CONFIG_GENESIS_FILE 
+            cp "./devnet/sk.json" "$SHARED_CONFIG_DATA_DIR"
+            cp -R "./devnet/keystore" "$SHARED_CONFIG_DATA_DIR"
+        fi 
+
     fi 
-fi 
+    SHARED_GENESIS_TIME=$(jq -r '.genesis_time' $SHARED_CONFIG_TESTNET_DIR/parsedBeaconState.json)
+    SHARED_CONFIG_NETWORK_ID=$CHAIN_ID
+    
+    echo "SHARED_GENESIS_TIME: $SHARED_GENESIS_TIME"
+
+    export SHARED_GENESIS_TIME
+    export SHARED_CONFIG_NETWORK_ID
+fi
 
 script=""
 
 latest_execution_client_version=${latest_clients["$execution_client"]}
 latest_consensus_client_version=${latest_clients["$consensus_client"]}
 
+SHARED_RUN="$run"
+
+export SHARED_RUN
+
 if [ "$run" = "execution" ]; then 
     script="$script_dir/clients/$execution_client/$latest_execution_client_version/run-$execution_client.sh"
     chmod +x "$script"
-    $script --env-file "$script_dir/network/$network/$execution_client-$consensus_client/$execution_client.env"
+    $script --env-file "$script_dir/network/$network/$execution_client-$consensus_client/$execution_client.conf"
 
-else 
+elif [ "$run" = "consensus" ]; then 
     script="$script_dir/clients/$consensus_client/$latest_consensus_client_version/run-$consensus_client.sh"
     chmod +x "$script"
-    $script --env-file "$script_dir/network/$network/$execution_client-$consensus_client/$consensus_client.env"
+    $script --env-file "$script_dir/network/$network/$execution_client-$consensus_client/$consensus_client.conf"
+elif [ "$run" = "validator" ]; then 
+    script="$script_dir/clients/$consensus_client/$latest_consensus_client_version/run-validator.sh"
+    chmod +x "$script"
+    $script --env-file "$script_dir/network/$network/$execution_client-$consensus_client/validator.conf"
+elif [ "$run" = "bootnode" ]; then 
+    script="$script_dir/clients/$consensus_client/$latest_consensus_client_version/run-$consensus_client.sh"
+    chmod +x "$script"
+    $script --env-file "$script_dir/network/$network/$execution_client-$consensus_client/bootnode.conf"   
+else 
+    echo "unsupported option"
+    exit 1     
 fi 

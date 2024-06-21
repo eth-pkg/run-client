@@ -40,4 +40,4 @@ For running a node on:
 - Sepolia, see [sepolia.md](sepolia.md)
 - Holesky, see [holesky.md](holesky.md)
 - Ephemery, see [ephemery.md](ephemery.md)
-- Local minimum devnet, see [devnet.md](devnet.md)
+- Local minimum testnet, see [local-only-testnet.md](local-only-testnet.md)

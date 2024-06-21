@@ -1,6 +1,6 @@
-# devnet
+# testnet
 
-Run clients on private devnet
+Run clients on private local only testnet
 
 ## Table of Contents
 - [Running a Node](#running-a-node)
@@ -34,7 +34,7 @@ Run clients on private devnet
 
   Terminal 1:
   ```bash 
-  bash run-client.sh --network devnet \
+  bash run-client.sh --network testnet \
                      --consensus-client lighthouse \
                      --execution-client besu \
                      --run execution \
@@ -43,7 +43,7 @@ Run clients on private devnet
 
   Terminal 2:
   ```bash
-  bash run-client.sh --network devnet \
+  bash run-client.sh --network testnet \
                      --consensus-client lighthouse \
                      --execution-client besu \
                      --run consensus \
@@ -52,7 +52,7 @@ Run clients on private devnet
 
   Terminal 3:
   ```bash
-  bash run-client.sh --network devnet \
+  bash run-client.sh --network testnet \
                      --consensus-client lighthouse \
                      --execution-client besu \
                      --run validator \
@@ -68,7 +68,7 @@ Run clients on private devnet
 
   Terminal 1:
   ```bash 
-  bash run-client.sh --network devnet \
+  bash run-client.sh --network testnet \
                      --consensus-client lodestar \
                      --execution-client besu \
                      --run execution \
@@ -77,7 +77,7 @@ Run clients on private devnet
 
   Terminal 2:
   ```bash
-  bash run-client.sh --network devnet \
+  bash run-client.sh --network testnet \
                      --consensus-client lodestar \
                      --execution-client besu \
                      --run consensus \
@@ -86,7 +86,7 @@ Run clients on private devnet
 
   Terminal 3:
   ```bash
-  bash run-client.sh --network devnet \
+  bash run-client.sh --network testnet \
                      --consensus-client lodestar \
                      --execution-client besu \
                      --run validator \
@@ -102,7 +102,7 @@ Run clients on private devnet
 
   Terminal 1:
   ```bash 
-  bash run-client.sh --network devnet \
+  bash run-client.sh --network testnet \
                      --consensus-client nimbus-eth2 \
                      --execution-client besu \
                      --run execution \
@@ -111,7 +111,7 @@ Run clients on private devnet
 
   Terminal 2:
   ```bash
-  bash run-client.sh --network devnet \
+  bash run-client.sh --network testnet \
                      --consensus-client nimbus-eth2 \
                      --execution-client besu \
                      --run consensus \
@@ -120,7 +120,7 @@ Run clients on private devnet
 
   Terminal 3:
   ```bash
-  bash run-client.sh --network devnet \
+  bash run-client.sh --network testnet \
                      --consensus-client nimbus-eth2 \
                      --execution-client besu \
                      --run validator \
@@ -136,7 +136,7 @@ Run clients on private devnet
 
   Terminal 1:
   ```bash 
-  bash run-client.sh --network devnet \
+  bash run-client.sh --network testnet \
                      --consensus-client prysm \
                      --execution-client besu \
                      --run execution \
@@ -145,7 +145,7 @@ Run clients on private devnet
 
   Terminal 2:
   ```bash
-  bash run-client.sh --network devnet \
+  bash run-client.sh --network testnet \
                      --consensus-client prysm \
                      --execution-client besu \
                      --run consensus \
@@ -154,7 +154,7 @@ Run clients on private devnet
 
   Terminal 3:
   ```bash
-  bash run-client.sh --network devnet \
+  bash run-client.sh --network testnet \
                      --consensus-client prysm \
                      --execution-client besu \
                      --run validator \
@@ -170,7 +170,7 @@ Run clients on private devnet
 
   Terminal 1:
   ```bash 
-  bash run-client.sh --network devnet \
+  bash run-client.sh --network testnet \
                      --consensus-client teku \
                      --execution-client besu \
                      --run execution \
@@ -179,7 +179,7 @@ Run clients on private devnet
 
   Terminal 2:
   ```bash
-  bash run-client.sh --network devnet \
+  bash run-client.sh --network testnet \
                      --consensus-client teku \
                      --execution-client besu \
                      --run consensus \
@@ -188,7 +188,7 @@ Run clients on private devnet
 
   Terminal 3:
   ```bash
-  bash run-client.sh --network devnet \
+  bash run-client.sh --network testnet \
                      --consensus-client teku \
                      --execution-client besu \
                      --run validator \
@@ -204,7 +204,7 @@ Run clients on private devnet
 
   Terminal 1:
   ```bash 
-  bash run-client.sh --network devnet \
+  bash run-client.sh --network testnet \
                      --consensus-client lighthouse \
                      --execution-client erigon \
                      --run execution \
@@ -213,7 +213,7 @@ Run clients on private devnet
 
   Terminal 2:
   ```bash
-  bash run-client.sh --network devnet \
+  bash run-client.sh --network testnet \
                      --consensus-client lighthouse \
                      --execution-client erigon \
                      --run consensus \
@@ -222,7 +222,7 @@ Run clients on private devnet
 
   Terminal 3:
   ```bash
-  bash run-client.sh --network devnet \
+  bash run-client.sh --network testnet \
                      --consensus-client lighthouse \
                      --execution-client erigon \
                      --run validator \
@@ -238,7 +238,7 @@ Run clients on private devnet
 
   Terminal 1:
   ```bash 
-  bash run-client.sh --network devnet \
+  bash run-client.sh --network testnet \
                      --consensus-client lodestar \
                      --execution-client erigon \
                      --run execution \
@@ -247,7 +247,7 @@ Run clients on private devnet
 
   Terminal 2:
   ```bash
-  bash run-client.sh --network devnet \
+  bash run-client.sh --network testnet \
                      --consensus-client lodestar \
                      --execution-client erigon \
                      --run consensus \
@@ -256,7 +256,7 @@ Run clients on private devnet
 
   Terminal 3:
   ```bash
-  bash run-client.sh --network devnet \
+  bash run-client.sh --network testnet \
                      --consensus-client lodestar \
                      --execution-client erigon \
                      --run validator \
@@ -272,7 +272,7 @@ Run clients on private devnet
 
   Terminal 1:
   ```bash 
-  bash run-client.sh --network devnet \
+  bash run-client.sh --network testnet \
                      --consensus-client nimbus-eth2 \
                      --execution-client erigon \
                      --run execution \
@@ -281,7 +281,7 @@ Run clients on private devnet
 
   Terminal 2:
   ```bash
-  bash run-client.sh --network devnet \
+  bash run-client.sh --network testnet \
                      --consensus-client nimbus-eth2 \
                      --execution-client erigon \
                      --run consensus \
@@ -290,7 +290,7 @@ Run clients on private devnet
 
   Terminal 3:
   ```bash
-  bash run-client.sh --network devnet \
+  bash run-client.sh --network testnet \
                      --consensus-client nimbus-eth2 \
                      --execution-client erigon \
                      --run validator \
@@ -306,7 +306,7 @@ Run clients on private devnet
 
   Terminal 1:
   ```bash 
-  bash run-client.sh --network devnet \
+  bash run-client.sh --network testnet \
                      --consensus-client prysm \
                      --execution-client erigon \
                      --run execution \
@@ -315,7 +315,7 @@ Run clients on private devnet
 
   Terminal 2:
   ```bash
-  bash run-client.sh --network devnet \
+  bash run-client.sh --network testnet \
                      --consensus-client prysm \
                      --execution-client erigon \
                      --run consensus \
@@ -324,7 +324,7 @@ Run clients on private devnet
 
   Terminal 3:
   ```bash
-  bash run-client.sh --network devnet \
+  bash run-client.sh --network testnet \
                      --consensus-client prysm \
                      --execution-client erigon \
                      --run validator \
@@ -340,7 +340,7 @@ Run clients on private devnet
 
   Terminal 1:
   ```bash 
-  bash run-client.sh --network devnet \
+  bash run-client.sh --network testnet \
                      --consensus-client teku \
                      --execution-client erigon \
                      --run execution \
@@ -349,7 +349,7 @@ Run clients on private devnet
 
   Terminal 2:
   ```bash
-  bash run-client.sh --network devnet \
+  bash run-client.sh --network testnet \
                      --consensus-client teku \
                      --execution-client erigon \
                      --run consensus \
@@ -360,7 +360,7 @@ Run clients on private devnet
   ```bash
 
 
-  bash run-client.sh --network devnet \
+  bash run-client.sh --network testnet \
                      --consensus-client teku \
                      --execution-client erigon \
                      --run validator \
@@ -376,7 +376,7 @@ Run clients on private devnet
 
   Terminal 1:
   ```bash 
-  bash run-client.sh --network devnet \
+  bash run-client.sh --network testnet \
                      --consensus-client lighthouse \
                      --execution-client geth \
                      --run execution \
@@ -385,7 +385,7 @@ Run clients on private devnet
 
   Terminal 2:
   ```bash
-  bash run-client.sh --network devnet \
+  bash run-client.sh --network testnet \
                      --consensus-client lighthouse \
                      --execution-client geth \
                      --run consensus \
@@ -394,7 +394,7 @@ Run clients on private devnet
 
   Terminal 3:
   ```bash
-  bash run-client.sh --network devnet \
+  bash run-client.sh --network testnet \
                      --consensus-client lighthouse \
                      --execution-client geth \
                      --run validator \
@@ -410,7 +410,7 @@ Run clients on private devnet
 
   Terminal 1:
   ```bash 
-  bash run-client.sh --network devnet \
+  bash run-client.sh --network testnet \
                      --consensus-client lodestar \
                      --execution-client geth \
                      --run execution \
@@ -419,7 +419,7 @@ Run clients on private devnet
 
   Terminal 2:
   ```bash
-  bash run-client.sh --network devnet \
+  bash run-client.sh --network testnet \
                      --consensus-client lodestar \
                      --execution-client geth \
                      --run consensus \
@@ -428,7 +428,7 @@ Run clients on private devnet
 
   Terminal 3:
   ```bash
-  bash run-client.sh --network devnet \
+  bash run-client.sh --network testnet \
                      --consensus-client lodestar \
                      --execution-client geth \
                      --run validator \
@@ -444,7 +444,7 @@ Run clients on private devnet
 
   Terminal 1:
   ```bash 
-  bash run-client.sh --network devnet \
+  bash run-client.sh --network testnet \
                      --consensus-client nimbus-eth2 \
                      --execution-client geth \
                      --run execution \
@@ -453,7 +453,7 @@ Run clients on private devnet
 
   Terminal 2:
   ```bash
-  bash run-client.sh --network devnet \
+  bash run-client.sh --network testnet \
                      --consensus-client nimbus-eth2 \
                      --execution-client geth \
                      --run consensus \
@@ -462,7 +462,7 @@ Run clients on private devnet
 
   Terminal 3:
   ```bash
-  bash run-client.sh --network devnet \
+  bash run-client.sh --network testnet \
                      --consensus-client nimbus-eth2 \
                      --execution-client geth \
                      --run validator \
@@ -478,7 +478,7 @@ Run clients on private devnet
 
   Terminal 1:
   ```bash 
-  bash run-client.sh --network devnet \
+  bash run-client.sh --network testnet \
                      --consensus-client prysm \
                      --execution-client geth \
                      --run execution \
@@ -487,7 +487,7 @@ Run clients on private devnet
 
   Terminal 2:
   ```bash
-  bash run-client.sh --network devnet \
+  bash run-client.sh --network testnet \
                      --consensus-client prysm \
                      --execution-client geth \
                      --run consensus \
@@ -496,7 +496,7 @@ Run clients on private devnet
 
   Terminal 3:
   ```bash
-  bash run-client.sh --network devnet \
+  bash run-client.sh --network testnet \
                      --consensus-client prysm \
                      --execution-client geth \
                      --run validator \
@@ -512,7 +512,7 @@ Run clients on private devnet
 
   Terminal 1:
   ```bash 
-  bash run-client.sh --network devnet \
+  bash run-client.sh --network testnet \
                      --consensus-client teku \
                      --execution-client geth \
                      --run execution \
@@ -521,7 +521,7 @@ Run clients on private devnet
 
   Terminal 2:
   ```bash
-  bash run-client.sh --network devnet \
+  bash run-client.sh --network testnet \
                      --consensus-client teku \
                      --execution-client geth \
                      --run consensus \
@@ -530,7 +530,7 @@ Run clients on private devnet
 
   Terminal 3:
   ```bash
-  bash run-client.sh --network devnet \
+  bash run-client.sh --network testnet \
                      --consensus-client teku \
                      --execution-client geth \
                      --run validator \
@@ -546,7 +546,7 @@ Run clients on private devnet
 
   Terminal 1:
   ```bash 
-  bash run-client.sh --network devnet \
+  bash run-client.sh --network testnet \
                      --consensus-client lighthouse \
                      --execution-client nethermind \
                      --run execution \
@@ -555,7 +555,7 @@ Run clients on private devnet
 
   Terminal 2:
   ```bash
-  bash run-client.sh --network devnet \
+  bash run-client.sh --network testnet \
                      --consensus-client lighthouse \
                      --execution-client nethermind \
                      --run consensus \
@@ -564,7 +564,7 @@ Run clients on private devnet
 
   Terminal 3:
   ```bash
-  bash run-client.sh --network devnet \
+  bash run-client.sh --network testnet \
                      --consensus-client lighthouse \
                      --execution-client nethermind \
                      --run validator \
@@ -580,7 +580,7 @@ Run clients on private devnet
 
   Terminal 1:
   ```bash 
-  bash run-client.sh --network devnet \
+  bash run-client.sh --network testnet \
                      --consensus-client lodestar \
                      --execution-client nethermind \
                      --run execution \
@@ -589,7 +589,7 @@ Run clients on private devnet
 
   Terminal 2:
   ```bash
-  bash run-client.sh --network devnet \
+  bash run-client.sh --network testnet \
                      --consensus-client lodestar \
                      --execution-client nethermind \
                      --run consensus \
@@ -598,7 +598,7 @@ Run clients on private devnet
 
   Terminal 3:
   ```bash
-  bash run-client.sh --network devnet \
+  bash run-client.sh --network testnet \
                      --consensus-client lodestar \
                      --execution-client nethermind \
                      --run validator \
@@ -614,7 +614,7 @@ Run clients on private devnet
 
   Terminal 1:
   ```bash 
-  bash run-client.sh --network devnet \
+  bash run-client.sh --network testnet \
                      --consensus-client nimbus-eth2 \
                      --execution-client nethermind \
                      --run execution \
@@ -623,7 +623,7 @@ Run clients on private devnet
 
   Terminal 2:
   ```bash
-  bash run-client.sh --network devnet \
+  bash run-client.sh --network testnet \
                      --consensus-client nimbus-eth2 \
                      --execution-client nethermind \
                      --run consensus \
@@ -632,7 +632,7 @@ Run clients on private devnet
 
   Terminal 3:
   ```bash
-  bash run-client.sh --network devnet \
+  bash run-client.sh --network testnet \
                      --consensus-client nimbus-eth2 \
                      --execution-client nethermind \
                      --run validator \
@@ -648,7 +648,7 @@ Run clients on private devnet
 
   Terminal 1:
   ```bash 
-  bash run-client.sh --network devnet \
+  bash run-client.sh --network testnet \
                      --consensus-client prysm \
                      --execution-client nethermind \
                      --run execution \
@@ -657,7 +657,7 @@ Run clients on private devnet
 
   Terminal 2:
   ```bash
-  bash run-client.sh --network devnet \
+  bash run-client.sh --network testnet \
                      --consensus-client prysm \
                      --execution-client nethermind \
                      --run consensus \
@@ -666,7 +666,7 @@ Run clients on private devnet
 
   Terminal 3:
   ```bash
-  bash run-client.sh --network devnet \
+  bash run-client.sh --network testnet \
                      --consensus-client prysm \
                      --execution-client nethermind \
                      --run validator \
@@ -682,7 +682,7 @@ Run clients on private devnet
 
   Terminal 1:
   ```bash 
-  bash run-client.sh --network devnet \
+  bash run-client.sh --network testnet \
                      --consensus-client teku \
                      --execution-client nethermind \
                      --run execution \
@@ -691,7 +691,7 @@ Run clients on private devnet
 
   Terminal 2:
   ```bash
-  bash run-client.sh --network devnet \
+  bash run-client.sh --network testnet \
                      --consensus-client teku \
                      --execution-client nethermind \
                      --run consensus \
@@ -700,7 +700,7 @@ Run clients on private devnet
 
   Terminal 3:
   ```bash
-  bash run-client.sh --network devnet \
+  bash run-client.sh --network testnet \
                      --consensus-client teku \
                      --execution-client nethermind \
                      --run validator \
